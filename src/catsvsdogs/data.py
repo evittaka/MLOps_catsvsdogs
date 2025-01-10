@@ -27,10 +27,12 @@ class MyDataset(Dataset):
             if download_data_check == "y":
                 print("Getting data from kaggle to {}".format(self.data_path))
                 download_data(self.data_path)
+        else:
+            print("Data exists in {}".format(self.data_path))        
 
 def check_if_data_exists(raw_data_path: Path) -> None:
     # Check if the dataset already exists
-    return os.path.exists(raw_data_path / "PetImages2")
+    return os.path.exists(raw_data_path / "PetImages")
 
 def download_data(raw_data_path: Path) -> None:
     """ Get data from kaggle using kaggle api
