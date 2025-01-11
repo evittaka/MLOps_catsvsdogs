@@ -179,3 +179,10 @@ cython_debug/
 # Don't push raw data to repo
 #   The size of the dataset is too large to contain at repo
 data/raw/
+data/processed/
+
+# Don't push model to repo
+*.pth
+
+# Don't push result to repo (maybe remove in the future)
+reports/
