@@ -66,3 +66,15 @@ Then, on the terminal, run the following command:
 ```bash
 invoke preprocess-data
 ```
+
+This will download the dataset and preprocess it. The number of images to use per class, image size and test size can be modified (TODO: add configuration).
+
+### Training
+
+To train the model, run the following command:
+
+```bash
+invoke train
+```
+
+Results will be saved in the `reports` directory.
