@@ -25,13 +25,8 @@ class MyDataset(Dataset):
         # Check if data exists in folder
         if not check_if_data_exists(self.data_path):
             print(f"Data is missing from {self.data_path}")
-            download_data_check = input("Download data from Kaggle? [y/n]: ")
-            if download_data_check.lower() == "y":
-                print(f"Getting data from Kaggle to {self.data_path}")
-                download_data(self.data_path)
-            else:
-                print("Data download skipped. Exiting preprocessing.")
-                return
+            print(f"Getting data from Kaggle to {self.data_path}")
+            download_data(self.data_path)
         else:
             print(f"Data already exists in {self.data_path}")
 
@@ -39,15 +34,23 @@ class MyDataset(Dataset):
 
 
 def check_if_data_exists(raw_data_path: Path) -> bool:
-    """Check if the dataset already exists in `data/raw` and flatten if necessary."""
+    """Check if the dataset already exists in `data/raw`."""
+    pet_images_path = raw_data_path / "PetImages"
+    
+    # Check if the PetImages directory exists in the raw_data_path
+    if pet_images_path.exists():
+        print(f"Dataset found at {pet_images_path}.")
+        return True
+    
+    # Additional safeguard: If it exists in a nested folder, move it
     for subfolder in raw_data_path.rglob("*"):
         if (subfolder / "PetImages").exists():
-            # If found in a nested subfolder, move it directly under `data/raw`
-            if subfolder != raw_data_path:
-                print(f"Dataset found in {subfolder}, moving to {raw_data_path}...")
-                move_contents_to_folder(subfolder, raw_data_path)
+            print(f"Dataset found in {subfolder}, moving to {raw_data_path}...")
+            move_contents_to_folder(subfolder, raw_data_path)
             return True
+    
     return False
+
 
 
 def move_contents_to_folder(src_folder: Path, dest_folder: Path) -> None:
@@ -66,8 +69,12 @@ def download_data(raw_data_path: Path) -> None:
         print("Downloading dataset...")
         dataset_path = kagglehub.dataset_download("shaunthesheep/microsoft-catsvsdogs-dataset")
         
-        # Move the data to raw_data_path
-        shutil.move(dataset_path, raw_data_path)
+        # Ensure the downloaded dataset is moved directly to `raw_data_path`
+        downloaded_path = Path(dataset_path)
+        if downloaded_path.exists() and downloaded_path != raw_data_path:
+            print(f"Moving downloaded dataset from {downloaded_path} to {raw_data_path}...")
+            move_contents_to_folder(downloaded_path, raw_data_path)
+        
         print(f"Dataset successfully downloaded and moved to {raw_data_path}")
     except Exception as e:
         print(f"An error occurred while downloading the dataset: {e}")
