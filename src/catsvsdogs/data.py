@@ -87,10 +87,10 @@ def catsvsdogs() -> (
     ]
 ):
     """Return train and test datasets for cats vs dogs classification."""
-    train_images = torch.load("data/processed/train_images.pt")
-    train_target = torch.load("data/processed/train_target.pt")
-    test_images = torch.load("data/processed/test_images.pt")
-    test_target = torch.load("data/processed/test_target.pt")
+    train_images = torch.load("data/processed/train_images.pt", weights_only=True)
+    train_target = torch.load("data/processed/train_target.pt", weights_only=True)
+    test_images = torch.load("data/processed/test_images.pt", weights_only=True)
+    test_target = torch.load("data/processed/test_target.pt", weights_only=True)
 
     train_set = torch.utils.data.TensorDataset(train_images, train_target)
     test_set = torch.utils.data.TensorDataset(test_images, test_target)
