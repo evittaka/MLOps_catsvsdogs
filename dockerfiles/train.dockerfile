@@ -1,5 +1,6 @@
 # Use the NVIDIA PyTorch container as the base image
-FROM pytorch/pytorch:2.5.1-cuda12.4-cudnn9-devel
+FROM nvidia/cuda:12.2.0-runtime-ubuntu22.04
+
 
 # Set the working directory
 WORKDIR /workspace
@@ -10,6 +11,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     unzip \
+    python3 \
+    python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Kaggle Python package
@@ -24,9 +27,9 @@ RUN cd /workspace/MLOps_catsvsdogs && git checkout docker_kagglehub
 WORKDIR /workspace/MLOps_catsvsdogs
 
 # Install Python dependencies from requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt && pip install kagglehub
+RUN pip install --no-cache-dir -r requirements.txt && pip install -r requirements_dev.txt && pip install kagglehub
 
-RUN python src/catsvsdogs/data.py data/raw/ data/processed/
+RUN python3 src/catsvsdogs/data.py data/raw/ data/processed/
 
 # Run the data.py script to download the dataset
 CMD ["/bin/bash"]
