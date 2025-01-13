@@ -78,3 +78,11 @@ invoke train
 ```
 
 Results will be saved in the `reports` directory.
+
+### Unit testing
+
+To run the unit tests, run the following command:
+
+```bash
+invoke test
+```
