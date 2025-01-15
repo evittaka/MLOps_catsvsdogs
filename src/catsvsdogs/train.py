@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import torch
 import typer
-from catsvsdogs.model import SimpleCNN
 
 from catsvsdogs.data import catsvsdogs
+from catsvsdogs.model import SimpleCNN
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 

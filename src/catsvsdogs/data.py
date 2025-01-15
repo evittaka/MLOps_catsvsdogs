@@ -1,15 +1,17 @@
+import os
+
+import kaggle
+import torch
 import typer
-from torch.utils.data import Dataset
-from torchvision import transforms
 from PIL import Image
 from sklearn.model_selection import train_test_split
+from torchvision import transforms
 from tqdm import tqdm
-import os
-import torch
-import kaggle
+
 
 def check_if_raw_data_exists(raw_data_path: str) -> bool:
     return os.path.exists(raw_data_path)
+
 
 def download_data(raw_dir: str) -> None:
     """
@@ -18,7 +20,8 @@ def download_data(raw_dir: str) -> None:
 
     kaggle.api.authenticate()
     kaggle.api.dataset_download_files("shaunthesheep/microsoft-catsvsdogs-dataset", path=raw_dir, unzip=True)
-    
+
+
 def preprocess_data(raw_dir: str, processed_dir: str) -> None:
     """
     Process raw data and save it to processed directory.
@@ -29,7 +32,7 @@ def preprocess_data(raw_dir: str, processed_dir: str) -> None:
     """
     images_dir = os.path.join(raw_dir, "PetImages")
 
-    if check_if_raw_data_exists(images_dir) == False:
+    if check_if_raw_data_exists(images_dir) is False:
         print("Data is missing from {}".format(raw_dir))
         download_data_check = input("Download data from kaggle? [y/n]: ")
         if download_data_check == "y":
@@ -42,11 +45,13 @@ def preprocess_data(raw_dir: str, processed_dir: str) -> None:
     image_size = (128, 128)
     test_size = 0.2
 
-    transform = transforms.Compose([
-        transforms.Resize(image_size),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
+    transform = transforms.Compose(
+        [
+            transforms.Resize(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ]
+    )
     images, targets = [], []
 
     class_map = {"Cat": 0, "Dog": 1}
@@ -59,7 +64,9 @@ def preprocess_data(raw_dir: str, processed_dir: str) -> None:
         img_count = 0
         total_images = len(os.listdir(class_dir))  # Get total number of images in the class directory
 
-        for img_name in tqdm(os.listdir(class_dir), desc=f"Processing {class_name}", total=min(max_samples_per_class, total_images)):
+        for img_name in tqdm(
+            os.listdir(class_dir), desc=f"Processing {class_name}", total=min(max_samples_per_class, total_images)
+        ):
             if img_count >= max_samples_per_class:
                 break
             try:
@@ -80,6 +87,7 @@ def preprocess_data(raw_dir: str, processed_dir: str) -> None:
         torch.save(lbls, os.path.join(processed_dir, f"{split}_target.pt"))
     print(f"Saved processed data to {processed_dir}")
 
+
 def catsvsdogs() -> (
     tuple[
         torch.utils.data.Dataset,
@@ -95,6 +103,7 @@ def catsvsdogs() -> (
     train_set = torch.utils.data.TensorDataset(train_images, train_target)
     test_set = torch.utils.data.TensorDataset(test_images, test_target)
     return train_set, test_set
+
 
 if __name__ == "__main__":
     typer.run(preprocess_data)
