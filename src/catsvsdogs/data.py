@@ -4,6 +4,7 @@ from torch.utils.data import Dataset, TensorDataset
 from torchvision import transforms
 from PIL import Image
 from sklearn.model_selection import train_test_split
+from torchvision import transforms
 from tqdm import tqdm
 import torch
 import os
@@ -115,6 +116,7 @@ def preprocess(raw_data_path: Path, output_folder: Path) -> None:
     dataset = MyDataset(raw_data_path)
     dataset.preprocess(output_folder)
 
+
 def catsvsdogs() -> (
     tuple[
         torch.utils.data.Dataset,
@@ -130,6 +132,7 @@ def catsvsdogs() -> (
     train_set = TensorDataset(train_images, train_target)
     test_set = TensorDataset(test_images, test_target)
     return train_set, test_set
+
 
 if __name__ == "__main__":
     typer.run(preprocess)
