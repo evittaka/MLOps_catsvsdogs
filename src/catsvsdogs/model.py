@@ -11,7 +11,7 @@ class SimpleCNN(nn.Module):
         self.conv2 = nn.Conv2d(32, 64, 3, 1)
         self.conv3 = nn.Conv2d(64, 128, 3, 1)
         self.dropout = nn.Dropout(0.5)
-        self.fc1 = nn.Linear(14 * 14 * 128, 2) # 14x14 image dimension on the last layer
+        self.fc1 = nn.Linear(14 * 14 * 128, 2)  # 14x14 image dimension on the last layer
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass."""
