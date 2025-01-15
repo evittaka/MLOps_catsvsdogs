@@ -1,6 +1,5 @@
-from torch.utils.data import Dataset
-
 from catsvsdogs.data import catsvsdogs
+from torch.utils.data import Dataset
 
 
 def test_catsvsdogs():
