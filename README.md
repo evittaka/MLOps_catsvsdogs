@@ -86,3 +86,27 @@ To run the unit tests, run the following command:
 ```bash
 invoke test
 ```
+
+### Good coding practices
+
+#### Styling
+
+We use 'ruff' to enforce code styling. To check the code styling, run the following command:
+
+```bash
+ruff check .
+```
+
+Some styling issues can be fixed automatically by running:
+
+```bash
+ruff check . --fix
+```
+
+Other issues will need to be fixed manually.
+
+To format the code, run the following command:
+
+```bash
+ruff format .
+```
