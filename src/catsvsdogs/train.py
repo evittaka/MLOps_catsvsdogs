@@ -3,9 +3,12 @@ import matplotlib.pyplot as plt
 import torch
 from omegaconf import DictConfig
 from tqdm import tqdm
+from loguru import logger
 
 from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import MobileNetV3
+
+logger.add("logs/training.log", rotation="10 MB", level="INFO")
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
@@ -19,8 +22,8 @@ def train(cfg: DictConfig) -> None:
     batch_size = cfg.train.batch_size
     epochs = cfg.train.epochs
 
-    print("Training model")
-    print(f"{lr=}, {batch_size=}, {epochs=}")
+    logger.info("Starting model training")
+    logger.info(f"Training configuration: lr={lr}, batch_size={batch_size}, epochs={epochs}")
 
     model = MobileNetV3(cfg).to(DEVICE)
     train_set, _ = catsvsdogs()
@@ -49,8 +52,9 @@ def train(cfg: DictConfig) -> None:
 
             progress_bar.set_postfix({"loss": loss.item(), "accuracy": accuracy})
 
-    print("Training complete")
+    logger.info("Training complete")
     torch.save(model.state_dict(), "models/model.pth")
+    logger.info("Model saved to models/model.pth")
 
     # Save training statistics as a figure
     fig, axs = plt.subplots(1, 2, figsize=(15, 5))
@@ -59,6 +63,7 @@ def train(cfg: DictConfig) -> None:
     axs[1].plot(statistics["train_accuracy"])
     axs[1].set_title("Train accuracy")
     fig.savefig("reports/figures/training_statistics.png")
+    logger.info("Training statistics saved to reports/figures/training_statistics.png")
 
 
 if __name__ == "__main__":
