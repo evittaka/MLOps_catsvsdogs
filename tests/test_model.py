@@ -10,6 +10,7 @@ def test_model_setup():
     # Check if model is an instance of nn.Module
     assert isinstance(model, nn.Module), "Model is not an instance of nn.Module"
 
+
 # Test output for different batch sizes
 @pytest.mark.parametrize("batch_size", [1, 4, 8, 16, 32, 64, 128])
 def test_model_behaviour(batch_size: int) -> None:

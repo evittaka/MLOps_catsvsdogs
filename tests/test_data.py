@@ -8,6 +8,7 @@ from torch.utils.data import Dataset
 # Statics
 RAW_DATA_PATH = Path("data/raw/PetImages")
 
+
 @pytest.mark.skipif(not os.path.exists(RAW_DATA_PATH), reason="Data files not found")
 def test_catsvsdogs():
     """Test the catsvsdogs class."""
