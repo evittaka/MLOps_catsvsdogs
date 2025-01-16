@@ -40,13 +40,21 @@ def preprocess_data(ctx: Context) -> None:
 
 
 @task
-def train(ctx: Context, lr: float = 1e-3, batch_size: int = 32, epochs: int = 10) -> None:
+def train(ctx: Context, lr: float = None, batch_size: int = None, epochs: int = None) -> None:
     """Train model."""
-    ctx.run(
-        f"python src/{PROJECT_NAME}/train.py --lr {lr} --batch-size {batch_size} --epochs {epochs}",
-        echo=True,
-        pty=not WINDOWS,
-    )
+    # Base command
+    command = f"python src/{PROJECT_NAME}/train.py"
+
+    # Add CLI arguments only if they are provided
+    if lr is not None:
+        command += f" --lr {lr}"
+    if batch_size is not None:
+        command += f" --batch-size {batch_size}"
+    if epochs is not None:
+        command += f" --epochs {epochs}"
+
+    # Run the constructed command
+    ctx.run(command, echo=True, pty=not WINDOWS)
 
 
 @task
