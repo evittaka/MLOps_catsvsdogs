@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 import torch
 from omegaconf import DictConfig
 from tqdm import tqdm
+from loguru import logger
 
 import wandb
 from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import MobileNetV3
+
+logger.add("logs/training.log", rotation="10 MB", level="INFO")
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
@@ -27,8 +30,9 @@ def train(cfg: DictConfig) -> None:
         config={"lr": lr, "batch_size": batch_size, "epochs": epochs},
     )
 
-    print("Training model")
-    print(f"{lr=}, {batch_size=}, {epochs=}")
+
+    logger.info("Starting model training")
+    logger.info(f"Training configuration: lr={lr}, batch_size={batch_size}, epochs={epochs}")
 
     model = MobileNetV3(cfg).to(DEVICE)
     train_set, _ = catsvsdogs()
@@ -61,7 +65,7 @@ def train(cfg: DictConfig) -> None:
 
             progress_bar.set_postfix({"loss": loss.item(), "accuracy": accuracy})
 
-    print("Training complete")
+    logger.info("Training complete")
     torch.save(model.state_dict(), "models/model.pth")
 
     # Save model as an artifact for wandb
@@ -72,6 +76,7 @@ def train(cfg: DictConfig) -> None:
     )
     artifact.add_file("models/model.pth")
     wandb_run.log_artifact(artifact)
+    logger.info("Model saved to models/model.pth")
 
     # Save training statistics as a figure
     fig, axs = plt.subplots(1, 2, figsize=(15, 5))
@@ -82,6 +87,7 @@ def train(cfg: DictConfig) -> None:
     # fig.savefig("reports/figures/training_statistics.png")
 
     wandb.log({"training_statistics": wandb.Image(fig)})
+    logger.info("Training statistics saved to reports/figures/training_statistics.png")
 
 
 if __name__ == "__main__":
