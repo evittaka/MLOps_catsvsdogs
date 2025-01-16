@@ -8,11 +8,13 @@ from torch import nn
 @pytest.fixture
 def mock_cfg():
     """Mock configuration for testing."""
-    return OmegaConf.create({
-        "model": {
-            "pretrained": False  # Set pretrained to False to avoid external dependencies
+    return OmegaConf.create(
+        {
+            "model": {
+                "pretrained": False  # Set pretrained to False to avoid external dependencies
+            }
         }
-    })
+    )
 
 
 def test_model_setup(mock_cfg):
@@ -29,4 +31,6 @@ def test_model_behaviour(mock_cfg, batch_size: int):
     # Check data pipeline
     dummy_input = torch.randn(batch_size, 3, 128, 128)  # Input tensor with batch size, 3 channels, 128x128 resolution
     output = model(dummy_input)
-    assert output.shape == torch.Size([batch_size, 2]), f"Expected output to have shape [batch_size, 2], got {output.shape}"
+    assert output.shape == torch.Size(
+        [batch_size, 2]
+    ), f"Expected output to have shape [batch_size, 2], got {output.shape}"
