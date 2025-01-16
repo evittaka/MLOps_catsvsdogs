@@ -1,7 +1,7 @@
 import hydra
+import timm
 from omegaconf import DictConfig
 from torch import nn
-import timm
 
 
 class MobileNetV3(nn.Module):

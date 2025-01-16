@@ -1,6 +1,5 @@
-import torch
-import typer
 import hydra
+import torch
 from omegaconf import DictConfig
 
 from catsvsdogs.data import catsvsdogs

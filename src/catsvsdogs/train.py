@@ -1,9 +1,8 @@
+import hydra
 import matplotlib.pyplot as plt
 import torch
-import typer
-from tqdm import tqdm
-import hydra
 from omegaconf import DictConfig
+from tqdm import tqdm
 
 from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import MobileNetV3
