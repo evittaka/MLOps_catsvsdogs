@@ -9,8 +9,10 @@ from catsvsdogs.model import MobileNetV3
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
+
 def loss_function():
     return torch.nn.CrossEntropyLoss()
+
 
 @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def train(cfg: DictConfig) -> None:
