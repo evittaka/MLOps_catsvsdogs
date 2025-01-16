@@ -26,6 +26,7 @@ dev = { file = ['requirements_dev.txt'] }
 [tool.ruff]
 line-length = 120
 indent-width = 4
+exclude = ["reports/"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "B", "I"]

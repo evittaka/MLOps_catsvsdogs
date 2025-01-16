@@ -143,7 +143,7 @@ s233671, s233670, s232425, s242577
 >
 > Answer:
 
---- question 3 fill here ---
+We used the third-party framework PyTorch Image Models (TIMM) in our project, as our goal was to classify images, and this framework is well-suited for that purpose. We mainly used the package to load pre-trained models, focusing on the MobileNetV3 model because it is lightweight and suitable for team members without access to a GPU, and to fine-tune it on our dataset. The package allowed us to quickly start with a state-of-the-art model, saving us the time of building it from scratch and achieving better results than training from scratch, thanks to the pretraining.
 
 ## Coding environment
 
