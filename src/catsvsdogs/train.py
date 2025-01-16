@@ -1,13 +1,14 @@
 import matplotlib.pyplot as plt
 import torch
 import typer
-from tqdm import tqdm
-
-from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import MobileNetV3
+from catsvsdogs.data import catsvsdogs
+from tqdm import tqdm
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
+def loss_function():
+    return torch.nn.CrossEntropyLoss()
 
 def train(lr: float = 1e-3, batch_size: int = 32, epochs: int = 10) -> None:
     """Train a model on the cats vs dogs dataset."""
@@ -19,7 +20,7 @@ def train(lr: float = 1e-3, batch_size: int = 32, epochs: int = 10) -> None:
 
     train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=batch_size)
 
-    loss_fn = torch.nn.CrossEntropyLoss()
+    loss_fn = loss_function()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     statistics = {"train_loss": [], "train_accuracy": []}
