@@ -44,6 +44,7 @@ def train(ctx: Context) -> None:
     """Train model."""
     ctx.run(f"python src/{PROJECT_NAME}/train.py", echo=True, pty=not WINDOWS)
 
+
 @task
 def evaluate(ctx: Context) -> None:
     """Evaluate model."""
