@@ -1,7 +1,8 @@
-from catsvsdogs.model import MobileNetV3
-import torch
-from torch import nn
 import pytest
+import torch
+from catsvsdogs.model import MobileNetV3
+from torch import nn
+
 
 def test_model_setup():
     """Test the SimpleCNN model class."""
