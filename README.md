@@ -51,6 +51,12 @@ or if in development mode
 invoke dev-requirements
 ```
 
+5. Install the pre-commit hooks
+
+```bash
+pre-commit install
+```
+
 ### Data
 
 The dataset is available on Kaggle at the following link: [Cats-vs-Dogs](https://www.kaggle.com/datasets/shaunthesheep/microsoft-catsvsdogs-dataset).
