@@ -97,12 +97,10 @@ class MyDataset(Dataset):
         src_folder.rmdir()
 
 
-def catsvsdogs() -> (
-    tuple[
-        torch.utils.data.Dataset,
-        torch.utils.data.Dataset,
-    ]
-):
+def catsvsdogs() -> tuple[
+    torch.utils.data.Dataset,
+    torch.utils.data.Dataset,
+]:
     """Return train and test datasets for cats vs dogs classification."""
     train_images = torch.load("data/processed/train_images.pt", weights_only=True)
     train_target = torch.load("data/processed/train_target.pt", weights_only=True)

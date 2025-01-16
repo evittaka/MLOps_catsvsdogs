@@ -184,3 +184,6 @@ outputs/
 
 # Don't push model to repo
 *.pth
+
+# wandb
+wandb/
