@@ -1,8 +1,11 @@
-import hydra
 import timm
+import typer
+from hydra import compose, initialize
+from hydra.core.global_hydra import GlobalHydra
 from omegaconf import DictConfig
 from torch import nn
 
+app = typer.Typer()
 
 class MobileNetV3(nn.Module):
     def __init__(self, cfg: DictConfig):
@@ -14,11 +17,16 @@ class MobileNetV3(nn.Module):
         return self.model(x)
 
 
-@hydra.main(version_base=None, config_path="../../configs", config_name="config")
-def main(cfg: DictConfig):
-    model = MobileNetV3(cfg)
+@app.command()
+def print_model():
+    """Print the model architecture based on the configuration."""
+    if not GlobalHydra().is_initialized():
+        initialize(config_path="../../configs", job_name="model", version_base=None)
+    hydra_cfg = compose(config_name="config")
+
+    model = MobileNetV3(hydra_cfg)
     print(model)
 
 
 if __name__ == "__main__":
-    main()
+    app()

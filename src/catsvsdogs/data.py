@@ -1,9 +1,11 @@
 import shutil
 from pathlib import Path
 
-import hydra
 import kagglehub
 import torch
+import typer
+from hydra import compose, initialize
+from hydra.core.global_hydra import GlobalHydra
 from omegaconf import DictConfig
 from PIL import Image
 from sklearn.model_selection import train_test_split
@@ -11,6 +13,7 @@ from torch.utils.data import Dataset, TensorDataset
 from torchvision import transforms
 from tqdm import tqdm
 
+app = typer.Typer()
 
 class MyDataset(Dataset):
     """Custom dataset for preprocessing and loading data."""
@@ -20,7 +23,6 @@ class MyDataset(Dataset):
 
     def preprocess(self, cfg: DictConfig):
         """Preprocess the raw data and save it to the output folder."""
-        # Check if data exists, download if necessary
         if not self.check_if_data_exists():
             print(f"Data is missing from {self.data_path}.")
             print(f"Downloading data to {self.data_path}...")
@@ -114,11 +116,15 @@ def catsvsdogs() -> (
     return train_set, test_set
 
 
-@hydra.main(version_base=None, config_path="../../configs", config_name="config")
-def main(cfg: DictConfig):
-    dataset = MyDataset(Path(cfg.data.raw_data_path))
-    dataset.preprocess(cfg)
+@app.command()
+def main(raw_data_path: str = "data/raw", output_folder: str = "data/processed") -> None:
+    """CLI interface for preprocessing data."""
+    if not GlobalHydra().is_initialized():
+        initialize(config_path="../../configs", job_name="data_preprocessing", version_base=None)
+    hydra_cfg = compose(config_name="config")
+    dataset = MyDataset(Path(raw_data_path))
+    dataset.preprocess(hydra_cfg)
 
 
 if __name__ == "__main__":
-    main()
+    app()

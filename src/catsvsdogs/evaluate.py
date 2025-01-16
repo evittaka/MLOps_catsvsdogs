@@ -1,26 +1,35 @@
-import hydra
 import torch
-from omegaconf import DictConfig
+import typer
+from hydra import compose, initialize
+from hydra.core.global_hydra import GlobalHydra
 
 from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import MobileNetV3
 
+app = typer.Typer()
+
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
 
-@hydra.main(version_base=None, config_path="../../configs", config_name="config")
-def evaluate(cfg: DictConfig) -> None:
+@app.command()
+def evaluate(
+    model_checkpoint: str = "models/model.pth",
+    batch_size: int = 32,
+) -> None:
     """Evaluate a trained model."""
     print("Evaluating model on test set")
-    print(cfg.evaluate.model_checkpoint)
+    print(model_checkpoint)
+
+    if not GlobalHydra().is_initialized():
+        initialize(config_path="../../configs", job_name="evaluate", version_base=None)
+    hydra_cfg = compose(config_name="config")
 
     # Initialize model using the configuration
-    model = MobileNetV3(cfg).to(DEVICE)
-    # model.load_state_dict(torch.load(cfg.evaluate.model_checkpoint))
-    model.load_state_dict(torch.load(cfg.evaluate.model_checkpoint, weights_only=True))
+    model = MobileNetV3(hydra_cfg).to(DEVICE)
+    model.load_state_dict(torch.load(model_checkpoint, weights_only=True))
 
     _, test_set = catsvsdogs()
-    test_dataloader = torch.utils.data.DataLoader(test_set, batch_size=cfg.evaluate.batch_size)
+    test_dataloader = torch.utils.data.DataLoader(test_set, batch_size=batch_size)
 
     model.eval()
     correct, total = 0, 0
@@ -34,4 +43,4 @@ def evaluate(cfg: DictConfig) -> None:
 
 
 if __name__ == "__main__":
-    evaluate()
+    app()
