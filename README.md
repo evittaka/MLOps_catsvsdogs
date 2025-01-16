@@ -79,6 +79,14 @@ invoke train
 
 Results will be saved in the `reports` directory.
 
+### Evaluation
+
+To evaluate the model, run the following command:
+
+```bash
+invoke evaluate --model-path <path-to-model>
+```
+
 ### Unit testing
 
 To run the unit tests, run the following command:
