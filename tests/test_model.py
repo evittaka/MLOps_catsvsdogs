@@ -1,10 +1,8 @@
-from catsvsdogs.model import SimpleCNN
-import torch
-from torch import nn
-from torch.utils.data import Dataset
-from pathlib import Path
-import os
 import pytest
+import torch
+from catsvsdogs.model import SimpleCNN
+from torch import nn
+
 
 def test_model_setup():
     """Test the SimpleCNN model class."""

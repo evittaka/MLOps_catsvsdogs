@@ -1,15 +1,15 @@
+import shutil
 from pathlib import Path
+
+import kagglehub
+import torch
 import typer
-from torch.utils.data import Dataset, TensorDataset
-from torchvision import transforms
 from PIL import Image
 from sklearn.model_selection import train_test_split
+from torch.utils.data import Dataset, TensorDataset
 from torchvision import transforms
 from tqdm import tqdm
-import torch
-import os
-import shutil
-import kagglehub
+
 
 class MyDataset(Dataset):
     """My custom dataset."""
