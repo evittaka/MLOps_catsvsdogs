@@ -1,8 +1,9 @@
 import pytest
 import torch
-from catsvsdogs.model import MobileNetV3
 from omegaconf import OmegaConf
 from torch import nn
+
+from catsvsdogs.model import MobileNetV3
 
 
 @pytest.fixture
@@ -31,6 +32,6 @@ def test_model_behaviour(mock_cfg, batch_size: int):
     # Check data pipeline
     dummy_input = torch.randn(batch_size, 3, 128, 128)  # Input tensor with batch size, 3 channels, 128x128 resolution
     output = model(dummy_input)
-    assert output.shape == torch.Size(
-        [batch_size, 2]
-    ), f"Expected output to have shape [batch_size, 2], got {output.shape}"
+    assert output.shape == torch.Size([batch_size, 2]), (
+        f"Expected output to have shape [batch_size, 2], got {output.shape}"
+    )

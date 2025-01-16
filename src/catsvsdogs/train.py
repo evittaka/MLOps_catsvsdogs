@@ -38,7 +38,9 @@ def train(cfg: DictConfig) -> None:
 
     for epoch in range(epochs):
         model.train()
-        progress_bar = tqdm(enumerate(train_dataloader), total=len(train_dataloader), desc=f"Epoch {epoch+1}/{epochs}")
+        progress_bar = tqdm(
+            enumerate(train_dataloader), total=len(train_dataloader), desc=f"Epoch {epoch + 1}/{epochs}"
+        )
         for _, (img, target) in progress_bar:
             img, target = img.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
