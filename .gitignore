@@ -180,6 +180,7 @@ cython_debug/
 #   The size of the dataset is too large to contain at repo
 data/raw/
 data/processed/
+outputs/
 
 # Don't push model to repo
 *.pth

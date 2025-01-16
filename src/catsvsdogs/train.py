@@ -1,6 +1,7 @@
+import hydra
 import matplotlib.pyplot as plt
 import torch
-import typer
+from omegaconf import DictConfig
 from tqdm import tqdm
 
 from catsvsdogs.data import catsvsdogs
@@ -9,12 +10,17 @@ from catsvsdogs.model import MobileNetV3
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
 
-def train(lr: float = 1e-3, batch_size: int = 32, epochs: int = 10) -> None:
+@hydra.main(version_base=None, config_path="../../configs", config_name="config")
+def train(cfg: DictConfig) -> None:
     """Train a model on the cats vs dogs dataset."""
+    lr = cfg.train.lr
+    batch_size = cfg.train.batch_size
+    epochs = cfg.train.epochs
+
     print("Training model")
     print(f"{lr=}, {batch_size=}, {epochs=}")
 
-    model = MobileNetV3().to(DEVICE)
+    model = MobileNetV3(cfg).to(DEVICE)
     train_set, _ = catsvsdogs()
 
     train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=batch_size)
@@ -54,4 +60,4 @@ def train(lr: float = 1e-3, batch_size: int = 32, epochs: int = 10) -> None:
 
 
 if __name__ == "__main__":
-    typer.run(train)
+    train()
