@@ -77,6 +77,12 @@ To train the model, run the following command:
 invoke train
 ```
 
+Also, parameters can be set:
+
+```bash
+invoke train --lr 0.01 --batch-size 32 --epochs 10
+```
+
 Results will be saved in the `reports` directory.
 
 ### Evaluation
