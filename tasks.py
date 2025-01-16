@@ -44,6 +44,10 @@ def train(ctx: Context, lr: float = 1e-3, batch_size: int = 32, epochs: int = 10
     """Train model."""
     ctx.run(f"python src/{PROJECT_NAME}/train.py --lr {lr} --batch-size {batch_size} --epochs {epochs}", echo=True, pty=not WINDOWS)
 
+@task
+def evaluate(ctx: Context) -> None:
+    """Evaluate model."""
+    ctx.run(f"python src/{PROJECT_NAME}/evaluate.py", echo=True, pty=not WINDOWS)
 
 @task
 def test(ctx: Context) -> None:
