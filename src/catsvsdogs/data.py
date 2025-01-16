@@ -10,6 +10,7 @@ from tqdm import tqdm
 import shutil
 import kagglehub
 
+
 class MyDataset(Dataset):
     """Custom dataset for preprocessing and loading data."""
 
@@ -44,7 +45,9 @@ class MyDataset(Dataset):
             total_images = len(list(class_dir.iterdir()))
 
             for img_name in tqdm(
-                class_dir.iterdir(), desc=f"Processing {class_name}", total=min(cfg.data.max_samples_per_class, total_images)
+                class_dir.iterdir(),
+                desc=f"Processing {class_name}",
+                total=min(cfg.data.max_samples_per_class, total_images),
             ):
                 if img_count >= cfg.data.max_samples_per_class:
                     break
@@ -92,6 +95,7 @@ class MyDataset(Dataset):
             shutil.move(str(item), str(dest_folder))
         src_folder.rmdir()
 
+
 def catsvsdogs() -> (
     tuple[
         torch.utils.data.Dataset,
@@ -113,6 +117,7 @@ def catsvsdogs() -> (
 def main(cfg: DictConfig):
     dataset = MyDataset(Path(cfg.data.raw_data_path))
     dataset.preprocess(cfg)
+
 
 if __name__ == "__main__":
     main()

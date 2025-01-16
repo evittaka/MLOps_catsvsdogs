@@ -17,9 +17,8 @@ def evaluate(cfg: DictConfig) -> None:
 
     # Initialize model using the configuration
     model = MobileNetV3(cfg).to(DEVICE)
-    #model.load_state_dict(torch.load(cfg.evaluate.model_checkpoint))
+    # model.load_state_dict(torch.load(cfg.evaluate.model_checkpoint))
     model.load_state_dict(torch.load(cfg.evaluate.model_checkpoint, weights_only=True))
-
 
     _, test_set = catsvsdogs()
     test_dataloader = torch.utils.data.DataLoader(test_set, batch_size=cfg.evaluate.batch_size)
