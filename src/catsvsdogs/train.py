@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 import torch
 import typer
-from catsvsdogs.model import MobileNetV3
-from catsvsdogs.data import catsvsdogs
 from tqdm import tqdm
+
+from catsvsdogs.data import catsvsdogs
+from catsvsdogs.model import MobileNetV3
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
@@ -26,7 +27,7 @@ def train(lr: float = 1e-3, batch_size: int = 32, epochs: int = 10) -> None:
     for epoch in range(epochs):
         model.train()
         progress_bar = tqdm(enumerate(train_dataloader), total=len(train_dataloader), desc=f"Epoch {epoch+1}/{epochs}")
-        for i, (img, target) in progress_bar:
+        for _, (img, target) in progress_bar:
             img, target = img.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
             y_pred = model(img)
