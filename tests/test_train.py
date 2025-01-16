@@ -2,6 +2,7 @@ import pytest
 import torch
 from catsvsdogs.train import loss_function
 
+
 # Test output for different batch sizes
 @pytest.mark.parametrize("batch_size", [1, 4, 8, 16, 32, 64, 128])
 def test_loss_function_behaviour(batch_size: int) -> None:
