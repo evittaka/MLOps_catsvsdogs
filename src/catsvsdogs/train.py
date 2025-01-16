@@ -9,6 +9,8 @@ from catsvsdogs.model import MobileNetV3
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
+def loss_function():
+    return torch.nn.CrossEntropyLoss()
 
 @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def train(cfg: DictConfig) -> None:
@@ -25,7 +27,7 @@ def train(cfg: DictConfig) -> None:
 
     train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=batch_size)
 
-    loss_fn = torch.nn.CrossEntropyLoss()
+    loss_fn = loss_function()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     statistics = {"train_loss": [], "train_accuracy": []}
