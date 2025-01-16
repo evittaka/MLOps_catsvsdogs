@@ -37,11 +37,13 @@ class MyDataset(Dataset):
             print(f"Data already exists in {self.data_path}")
 
         images_dir = self.data_path / "PetImages"
-        transform = transforms.Compose([
-            transforms.Resize(image_size),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-        ])
+        transform = transforms.Compose(
+            [
+                transforms.Resize(image_size),
+                transforms.ToTensor(),
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            ]
+        )
 
         images, targets = [], []
         class_map = {"Cat": 0, "Dog": 1}
@@ -51,7 +53,9 @@ class MyDataset(Dataset):
             img_count = 0
             total_images = len(list(class_dir.iterdir()))
 
-            for img_name in tqdm(class_dir.iterdir(), desc=f"Processing {class_name}", total=min(max_samples_per_class, total_images)):
+            for img_name in tqdm(
+                class_dir.iterdir(), desc=f"Processing {class_name}", total=min(max_samples_per_class, total_images)
+            ):
                 if img_count >= max_samples_per_class:
                     break
                 try:
@@ -72,6 +76,7 @@ class MyDataset(Dataset):
             torch.save(lbls, output_folder / f"{split}_target.pt")
         print(f"Saved processed data to {output_folder}")
 
+
 def check_if_data_exists(raw_data_path: Path) -> bool:
     """Check if the dataset already exists in `data/raw`."""
     pet_images_path = raw_data_path / "PetImages"
@@ -88,12 +93,14 @@ def check_if_data_exists(raw_data_path: Path) -> bool:
 
     return False
 
+
 def move_contents_to_folder(src_folder: Path, dest_folder: Path) -> None:
     """Move all contents from `src_folder` to `dest_folder`."""
     dest_folder.mkdir(parents=True, exist_ok=True)
     for item in src_folder.iterdir():
         shutil.move(str(item), str(dest_folder))
     src_folder.rmdir()
+
 
 def download_data(raw_data_path: Path) -> None:
     """Download data using kagglehub."""
@@ -109,6 +116,7 @@ def download_data(raw_data_path: Path) -> None:
         print(f"Dataset successfully downloaded and moved to {raw_data_path}")
     except Exception as e:
         print(f"An error occurred while downloading the dataset: {e}")
+
 
 def preprocess(raw_data_path: Path, output_folder: Path) -> None:
     """Main preprocess entry point."""

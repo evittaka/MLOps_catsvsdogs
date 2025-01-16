@@ -1,8 +1,8 @@
 import torch
 import typer
-from catsvsdogs.model import MobileNetV3
 
 from catsvsdogs.data import catsvsdogs
+from catsvsdogs.model import MobileNetV3
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
