@@ -12,7 +12,7 @@ class MobileNetV3(pl.LightningModule):
     def __init__(self, cfg: DictConfig):
         super(MobileNetV3, self).__init__()
         logger.info("Initializing MobileNetV3 model...")
-        self.learning_rate = cfg.lr
+        self.learning_rate = cfg.train.lr
         self.criterium = nn.CrossEntropyLoss()  # Define the loss function
         
         self.model = timm.create_model("mobilenetv3_large_100", pretrained=cfg.model.pretrained)
