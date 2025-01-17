@@ -1,9 +1,8 @@
 import pytest
 import torch
+from catsvsdogs.model import MobileNetV3
 from omegaconf import OmegaConf
 from torch import nn
-
-from catsvsdogs.model import MobileNetV3
 
 
 @pytest.fixture
