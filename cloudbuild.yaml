@@ -5,7 +5,7 @@ steps:
     'build',
     '.',
     '-t',
-    'europe-west1-docker.pkg.dev/dtumlops-448016/mlops-50-docker/mlops-app',
+    'europe-west1-docker.pkg.dev/dtumlops-448016/mlops-50-docker/mlops-app-cloud',
     '-f',
     'dockerfiles/train.dockerfile'
   ]
@@ -13,7 +13,7 @@ steps:
   id: 'Push container image'
   args: [
     'push',
-    'europe-west1-docker.pkg.dev/dtumlops-448016/mlops-50-docker/mlops-app'
+    'europe-west1-docker.pkg.dev/dtumlops-448016/mlops-50-docker/mlops-app-cloud'
   ]
 options:
   logging: CLOUD_LOGGING_ONLY
