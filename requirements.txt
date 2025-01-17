@@ -16,3 +16,4 @@ tqdm==4.67.1
 typer==0.15.1
 scikit-learn==1.6.1
 matplotlib==3.10.0
+wandb==0.19.3
