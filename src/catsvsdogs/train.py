@@ -64,7 +64,8 @@ def train(cfg: DictConfig) -> None:
             wandb.log({"train_loss": loss.item(), "train_accuracy": accuracy})
 
             progress_bar.set_postfix({"loss": loss.item(), "accuracy": accuracy})
-
+        logger.info(f"Epoch {epoch + 1}/{epochs} completed: loss={statistics['train_loss'][-1]:.4f}, accuracy={statistics['train_accuracy'][-1]:.4f}")
+        
     logger.info("Training complete")
     torch.save(model.state_dict(), "models/model.pth")
 
