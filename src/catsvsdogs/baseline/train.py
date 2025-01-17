@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import torch
 import typer
-
 from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import SimpleCNN
 

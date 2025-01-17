@@ -2,9 +2,8 @@ import os
 from pathlib import Path
 
 import pytest
-from torch.utils.data import Dataset
-
 from catsvsdogs.data import catsvsdogs
+from torch.utils.data import Dataset
 
 # Statics
 RAW_DATA_PATH = Path("data/raw/PetImages")
