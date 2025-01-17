@@ -12,14 +12,10 @@ def mock_cfg():
     return OmegaConf.create(
         {
             "model": {
-                "pretrained": False # Set pretrained to False to avoid external dependencies
+                "pretrained": False  # Set pretrained to False to avoid external dependencies
             },
-            "train": {
-                "lr": 0.001,
-                "batch_size": 32,
-                "epochs": 5
+            "train": {"lr": 0.001, "batch_size": 32, "epochs": 5}
             }
-        }
     )
 
 
