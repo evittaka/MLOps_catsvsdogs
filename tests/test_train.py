@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from catsvsdogs.train import loss_function
 
 

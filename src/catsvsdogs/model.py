@@ -1,16 +1,15 @@
 import hydra
-import timm
-from torch import nn, optim
-import torch.nn.functional as F
 import pytorch_lightning as pl
-from omegaconf import DictConfig
+import timm
 from loguru import logger
+from omegaconf import DictConfig
+from torch import nn, optim
 
 logger.add("logs/model.log", rotation="10 MB", level="INFO")
 
 
 class MobileNetV3(pl.LightningModule):
-   def __init__(self, cfg: DictConfig):
+    def __init__(self, cfg: DictConfig):
         super(MobileNetV3, self).__init__()
         logger.info("Initializing MobileNetV3 model...")
         self.learning_rate = cfg.lr

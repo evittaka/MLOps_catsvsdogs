@@ -1,15 +1,11 @@
 import hydra
 import matplotlib.pyplot as plt
 import torch
-import pytorch_lightning as pl
-from pytorch_lightning import Trainer
-import typer
-from omegaconf import DictConfig
-from tqdm import tqdm
-from loguru import logger
-
-
 import wandb
+from loguru import logger
+from omegaconf import DictConfig
+from pytorch_lightning import Trainer
+
 from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import MobileNetV3
 
@@ -40,14 +36,12 @@ def train(cfg: DictConfig) -> None:
     model = MobileNetV3(cfg).to(DEVICE)
 
     train_set, _ = catsvsdogs()
-    train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle = True)
+    train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=True)
 
-    trainer = Trainer(max_epochs=epochs, devices = 1, accelerator = 'auto')
+    trainer = Trainer(max_epochs=epochs, devices=1, accelerator="auto")
     trainer.fit(model, train_dataloader)
 
-
     wandb.log({"train_loss": model.train_loss_history, "train_accuracy": model.train_accuracy_history})
-
 
     logger.info("Training complete")
     torch.save(model.state_dict(), "models/model.pth")
