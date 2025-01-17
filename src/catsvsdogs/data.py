@@ -14,6 +14,7 @@ from tqdm import tqdm
 
 logger.add("logs/dataset_preprocessing.log", rotation="10 MB", level="INFO")
 
+
 class MyDataset(Dataset):
     """Custom dataset for preprocessing and loading data."""
 
@@ -111,7 +112,7 @@ def catsvsdogs() -> tuple[
     train_target = torch.load("data/processed/train_target.pt", weights_only=True)
     test_images = torch.load("data/processed/test_images.pt", weights_only=True)
     test_target = torch.load("data/processed/test_target.pt", weights_only=True)
-    
+
     logger.info("Loaded train and test datasets")
     train_set = TensorDataset(train_images, train_target)
     test_set = TensorDataset(test_images, test_target)
@@ -124,6 +125,7 @@ def main(cfg: DictConfig):
     dataset = MyDataset(Path(cfg.data.raw_data_path))
     dataset.preprocess(cfg)
     logger.info("Dataset preprocessing completed successfully!")
+
 
 if __name__ == "__main__":
     main()

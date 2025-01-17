@@ -1,7 +1,7 @@
 import hydra
 import torch
-from omegaconf import DictConfig
 from loguru import logger
+from omegaconf import DictConfig
 
 from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import MobileNetV3

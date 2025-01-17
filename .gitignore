@@ -185,5 +185,9 @@ outputs/
 # Don't push model to repo
 *.pth
 
+# Don't push lightning logs to repo
+lightning_logs/
+
 # wandb
 wandb/
+

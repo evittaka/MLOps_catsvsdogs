@@ -1,11 +1,11 @@
 import hydra
 import matplotlib.pyplot as plt
 import torch
-from omegaconf import DictConfig
-from tqdm import tqdm
-from loguru import logger
-
 import wandb
+from loguru import logger
+from omegaconf import DictConfig
+from pytorch_lightning import Trainer
+
 from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import MobileNetV3
 
@@ -30,42 +30,19 @@ def train(cfg: DictConfig) -> None:
         config={"lr": lr, "batch_size": batch_size, "epochs": epochs},
     )
 
-
     logger.info("Starting model training")
     logger.info(f"Training configuration: lr={lr}, batch_size={batch_size}, epochs={epochs}")
 
     model = MobileNetV3(cfg).to(DEVICE)
+
     train_set, _ = catsvsdogs()
+    train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=True)
 
-    train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=batch_size)
+    trainer = Trainer(max_epochs=epochs, devices=1, accelerator="auto")
+    trainer.fit(model, train_dataloader)
 
-    loss_fn = loss_function()
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    wandb.log({"train_loss": model.train_loss_history, "train_accuracy": model.train_accuracy_history})
 
-    statistics = {"train_loss": [], "train_accuracy": []}
-
-    for epoch in range(epochs):
-        model.train()
-        progress_bar = tqdm(
-            enumerate(train_dataloader), total=len(train_dataloader), desc=f"Epoch {epoch + 1}/{epochs}"
-        )
-        for _, (img, target) in progress_bar:
-            img, target = img.to(DEVICE), target.to(DEVICE)
-            optimizer.zero_grad()
-            y_pred = model(img)
-            loss = loss_fn(y_pred, target)
-            loss.backward()
-            optimizer.step()
-
-            statistics["train_loss"].append(loss.item())
-            accuracy = (y_pred.argmax(dim=1) == target).float().mean().item()
-            statistics["train_accuracy"].append(accuracy)
-
-            wandb.log({"train_loss": loss.item(), "train_accuracy": accuracy})
-
-            progress_bar.set_postfix({"loss": loss.item(), "accuracy": accuracy})
-        logger.info(f"Epoch {epoch + 1}/{epochs} completed: loss={statistics['train_loss'][-1]:.4f}, accuracy={statistics['train_accuracy'][-1]:.4f}")
-        
     logger.info("Training complete")
     torch.save(model.state_dict(), "models/model.pth")
 
@@ -81,9 +58,9 @@ def train(cfg: DictConfig) -> None:
 
     # Save training statistics as a figure
     fig, axs = plt.subplots(1, 2, figsize=(15, 5))
-    axs[0].plot(statistics["train_loss"])
+    axs[0].plot(model.train_loss_history)
     axs[0].set_title("Train loss")
-    axs[1].plot(statistics["train_accuracy"])
+    axs[1].plot(model.train_accuracy_history)
     axs[1].set_title("Train accuracy")
     # fig.savefig("reports/figures/training_statistics.png")
 

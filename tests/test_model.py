@@ -13,7 +13,8 @@ def mock_cfg():
         {
             "model": {
                 "pretrained": False  # Set pretrained to False to avoid external dependencies
-            }
+            },
+            "train": {"lr": 0.001, "batch_size": 32, "epochs": 5}
         }
     )
 
