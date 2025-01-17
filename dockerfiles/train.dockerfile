@@ -21,9 +21,8 @@ RUN ln -sf /usr/bin/python3.11 /usr/bin/python && ln -sf /usr/bin/python3.11 /us
 RUN pip install --upgrade setuptools wheel pip
 
 # Clone the target repository
-# ARG REPO_URL
 RUN git clone https://github.com/evittaka/MLOps_catsvsdogs.git /workspace/MLOps_catsvsdogs
-RUN cd /workspace/MLOps_catsvsdogs && git checkout docker_kagglehub
+RUN cd /workspace/MLOps_catsvsdogs
 
 # Set the working directory to the cloned repository
 WORKDIR /workspace/MLOps_catsvsdogs
@@ -31,7 +30,8 @@ WORKDIR /workspace/MLOps_catsvsdogs
 # Install Python dependencies from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt && pip install -r requirements_dev.txt && pip install -e .
 
-RUN python src/catsvsdogs/data.py data/raw/ data/processed/
+RUN python src/catsvsdogs/data.py
 
-# Run the data.py script to download the dataset
-CMD ["/bin/bash", "-c", "invoke train"]
+# Add entrypoint script
+ENTRYPOINT ["/bin/bash", "-c"]
+CMD ["invoke train"]
