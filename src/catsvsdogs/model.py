@@ -24,7 +24,7 @@ class MobileNetV3(pl.LightningModule):
         self.train_accuracy_history = []
 
     def forward(self, x):
-        logger.debug("Forward pass invoked.")
+        # logger.debug("Forward pass invoked.")
         return self.model(x)
 
     def training_step(self, batch, batch_idx):
