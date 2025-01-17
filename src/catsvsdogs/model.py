@@ -40,7 +40,7 @@ class MobileNetV3(pl.LightningModule):
         return loss
     
     def configure_optimizers(self):
-        return optim.Adam(self.parameters(), lr = self.learning_rate)
+        return optim.Adam(self.parameters(), lr=self.learning_rate)
     
     def loss_fn(self, preds, target):
         return nn.CrossEntropyLoss()(preds, target)
