@@ -243,7 +243,11 @@ We used the third-party framework PyTorch Image Models (TIMM) in our project, as
 >
 > Answer:
 
---- question 9 fill here ---
+Yes, we employed branches and pull requests as part of our workflow. Initially, we experienced a major issue when a direct push to the main branch resulted in the repository being completely disrupted. This taught us the importance of using branches and pull requests for maintaining stability. We had to use git reset --hard to recover the repository, which was a valuable but time-consuming lesson.
+
+To prevent such incidents in the future, we set up the repository to only allow pull requests to the main branch. Additionally, we enforced a rule to prevent anyone from approving their own pull requests, ensuring peer review before merging. Each team member worked on their respective feature branches and submitted pull requests once their code was ready. This process allowed us to catch bugs, maintain code quality, and ensure that new changes integrated smoothly without impacting the main branch.
+
+By implementing this structure, we improved collaboration and safeguarded the integrity of our codebase, ensuring a smoother and more professional development workflow.
 
 ### Question 10
 
@@ -258,7 +262,9 @@ We used the third-party framework PyTorch Image Models (TIMM) in our project, as
 >
 > Answer:
 
---- question 10 fill here ---
+We did make use of DVC in the following way: we set it up with Google Cloud Buckets as our remote storage for data. However, since our dataset was fixed from the beginning and did not change during the project, we did not rely heavily on the versioning capabilities provided by DVC.
+
+In the end, it helped us in tracking scenarios where our processed data would change. This occurred primarily when re-processing the dataset to adjust parameters such as batch size or image size, for instance, to optimize model training or improve performance. By using DVC, we ensured that each version of our processed data was stored and linked to its corresponding configurations, allowing us to easily revert to previous versions or test alternative setups without manually managing multiple copies of the processed data.
 
 ### Question 11
 
@@ -294,7 +300,7 @@ We used the third-party framework PyTorch Image Models (TIMM) in our project, as
 >
 > Answer:
 
---- question 12 fill here ---
+We initially used Typer for configuring experiments, which allowed us to pass arguments directly through the command line. However, as our project grew in complexity, we transitioned to Hydra to manage all configuration files effectively. Using Hydra, we created separate configuration files for data, model, training, and evaluation. This modular setup made it easy to experiment with different configurations without modifying the code. Another benefit of using Hydra was the ability to log each configuration for each experiment, ensuring reproducibility and making it easy to track the results of each run.
 
 ### Question 13
 
@@ -309,7 +315,9 @@ We used the third-party framework PyTorch Image Models (TIMM) in our project, as
 >
 > Answer:
 
---- question 13 fill here ---
+As mentioned in Question 12, we used Hydra to manage all configuration files for our experiments, including those for data, model, training, and evaluation. One of the key benefits of using Hydra is that it automatically saves the configuration used for each run in a separate directory, ensuring that no information is lost.
+
+Whenever an experiment is run, the exact configuration of all parameters is stored alongside the results, making it easy to track the setup that produced a particular outcome. To reproduce an experiment, we simply reuse the saved configuration file from a previous run. This feature allowed us to maintain a comprehensive record of every experiment and ensured reproducibility across the team.
 
 ### Question 14
 
@@ -373,7 +381,17 @@ We used the third-party framework PyTorch Image Models (TIMM) in our project, as
 >
 > Answer:
 
---- question 17 fill here ---
+We used the following GCP services in our project:
+
+- **Google Cloud Buckets:** Used for storing our datasets and processed data. The buckets served as a remote storage solution, ensuring easy accessibility and integration with our version control system, DVC.
+
+- **VM Instances (Compute Engine):** Utilized for running experiments and training our models in the cloud. These virtual machines provided the computational resources needed for efficient execution of our workloads.
+
+- **Cloud Build:** Employed to build Docker images automatically. We set up triggers linked to our GitHub repository so that whenever changes were pushed, the Docker images were rebuilt and deployed. This streamlined our workflow and ensured that the latest code was always reflected in the containerized environment.
+
+- **Vertex AI:** Used for orchestrating our model training and deployment pipelines. Vertex AI provided a managed environment for training models on distributed hardware and for deploying our trained models as scalable, reliable endpoints.
+
+These services combined allowed us to manage data, compute resources, and deployment workflows efficiently, significantly improving our project’s scalability and reliability.
 
 ### Question 18
 
@@ -388,7 +406,20 @@ We used the third-party framework PyTorch Image Models (TIMM) in our project, as
 >
 > Answer:
 
---- question 18 fill here ---
+We used Compute Engine for training and experiments, initially deploying a **T4 GPU instance** in the South America region due to GPU unavailability in Europe. The instance was created using the following command:
+
+```bash
+gcloud compute instances create mlops-t4-gpu \
+    --zone=southamerica-east1-c \
+    --machine-type=n1-standard-1 \
+    --image-family=tf2-ent-latest-gpu \
+    --image-project=deeplearning-platform-release \
+    --accelerator="type=nvidia-tesla-t4,count=1" \
+    --maintenance-policy=TERMINATE \
+    --metadata="install-nvidia-driver=True"
+```
+Although lag was significant while working on this instance, we managed to run our experiments and training pipelines successfully. Additionally, we used **Docker images** to containerize our training environment. These images were built using **Cloud Build**, with triggers linked to our GitHub repository to ensure that changes in the codebase were automatically reflected in the containerized environment. This approach allowed us to maintain consistency between our local and cloud environments, facilitating reproducibility and scalability across different stages of the project.
+
 
 ### Question 19
 
@@ -397,7 +428,9 @@ We used the third-party framework PyTorch Image Models (TIMM) in our project, as
 >
 > Answer:
 
---- question 19 fill here ---
+![my_image](figures/bucket3.png)
+
+![my_image](figures/buckets.png)
 
 ### Question 20
 
@@ -406,7 +439,9 @@ We used the third-party framework PyTorch Image Models (TIMM) in our project, as
 >
 > Answer:
 
---- question 20 fill here ---
+![my_image](figures/registry.png)
+
+![my_image](figures/registry2.png)
 
 ### Question 21
 
@@ -415,7 +450,8 @@ We used the third-party framework PyTorch Image Models (TIMM) in our project, as
 >
 > Answer:
 
---- question 21 fill here ---
+![my_image](figures/build_hist.png)
+
 
 ### Question 22
 
