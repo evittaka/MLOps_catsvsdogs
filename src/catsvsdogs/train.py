@@ -67,5 +67,6 @@ def train(cfg: DictConfig) -> None:
     wandb.log({"training_statistics": wandb.Image(fig)})
     logger.info("Training statistics saved to reports/figures/training_statistics.png")
 
+
 if __name__ == "__main__":
     train()
