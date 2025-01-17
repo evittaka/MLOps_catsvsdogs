@@ -12,7 +12,7 @@ class MobileNetV3(nn.Module):
         logger.info("Initializing MobileNetV3 model...")
         self.model = timm.create_model("mobilenetv3_large_100", pretrained=cfg.model.pretrained)
         self.model.classifier = nn.Linear(self.model.classifier.in_features, 2)
-        logger.info("MobileNetV3 model initialized successfully with configuration:")
+        logger.info("MobileNetV3 model initialized successfully with configuration")
         
     def forward(self, x):
         logger.debug("Forward pass invoked.")
