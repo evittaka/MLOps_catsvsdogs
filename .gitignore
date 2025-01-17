@@ -178,8 +178,7 @@ cython_debug/
 
 # Don't push raw data to repo
 #   The size of the dataset is too large to contain at repo
-data/raw/
-data/processed/
+data/
 outputs/
 
 # Don't push model to repo
@@ -190,3 +189,4 @@ lightning_logs/
 
 # wandb
 wandb/
+/data
