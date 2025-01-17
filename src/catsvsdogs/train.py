@@ -81,6 +81,5 @@ def train(cfg: DictConfig) -> None:
 
     wandb.log({"training_statistics": wandb.Image(fig)})
 
-
 if __name__ == "__main__":
     train()
