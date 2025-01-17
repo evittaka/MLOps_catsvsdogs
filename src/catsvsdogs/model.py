@@ -1,24 +1,33 @@
+import hydra
 import timm
 from torch import nn, optim
 import torch.nn.functional as F
 import pytorch_lightning as pl
+from omegaconf import DictConfig
+from loguru import logger
+
+logger.add("logs/model.log", rotation="10 MB", level="INFO")
 
 
 class MobileNetV3(pl.LightningModule):
-    def __init__(self, pretrained: bool = True, num_classes: int = 2, learning_rate: float = 1e-2):
+   def __init__(self, cfg: DictConfig):
         super(MobileNetV3, self).__init__()
-        self.learning_rate = learning_rate
+        logger.info("Initializing MobileNetV3 model...")
+        self.learning_rate = cfg.lr
         self.criterium = nn.CrossEntropyLoss()  # Define the loss function
         
-        self.model = timm.create_model("mobilenetv3_large_100", pretrained=pretrained)
-        self.model.classifier = nn.Linear(self.model.classifier.in_features, num_classes)
+        self.model = timm.create_model("mobilenetv3_large_100", pretrained=cfg.model.pretrained)
+        self.model.classifier = nn.Linear(self.model.classifier.in_features, 2)
+        logger.info("MobileNetV3 model initialized successfully with configuration")
 
         # Initialize lists to track loss and accuracy during training
         self.train_loss_history = []
         self.train_accuracy_history = []
 
     def forward(self, x):
+        logger.debug("Forward pass invoked.")
         return self.model(x)
+
     
     def training_step(self, batch, batch_idx):
         data, target = batch
@@ -36,3 +45,16 @@ class MobileNetV3(pl.LightningModule):
     
     def loss_fn(self, preds, target):
         return nn.CrossEntropyLoss()(preds, target)
+
+
+
+@hydra.main(version_base=None, config_path="../../configs", config_name="config")
+def main(cfg: DictConfig):
+    logger.info("Starting main function...")
+    model = MobileNetV3(cfg)
+    logger.info(f"Model architecture:\n{model}")
+    logger.info("Model created successfully!")
+
+
+if __name__ == "__main__":
+    main()

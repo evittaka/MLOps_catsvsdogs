@@ -1,0 +1,3 @@
+evaluate:
+  model_checkpoint: "models/model.pth"
+  batch_size: 32

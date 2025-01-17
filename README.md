@@ -51,6 +51,12 @@ or if in development mode
 invoke dev-requirements
 ```
 
+5. Install the pre-commit hooks
+
+```bash
+pre-commit install
+```
+
 ### Data
 
 The dataset is available on Kaggle at the following link: [Cats-vs-Dogs](https://www.kaggle.com/datasets/shaunthesheep/microsoft-catsvsdogs-dataset).
@@ -123,4 +129,48 @@ To format the code, run the following command:
 
 ```bash
 ruff format .
+```
+# Running the Project with Docker
+
+## Building the Docker Image
+
+To build the Docker image for the project, run the following command:
+
+```bash
+docker build --build-arg -f train.dockerfile . -t train:latest
+```
+
+- This command will build the Docker image and tag it as `train:latest`.
+
+## Running the Docker Container
+
+Once the Docker image is built, you can run the container using the following command (for Ubuntu-based systems):
+
+```bash
+docker run -it --rm --gpus all train
+```
+
+### Explanation of Flags:
+- `-it`: Runs the container in interactive mode with a terminal.
+- `--rm`: Automatically removes the container once it stops.
+- `--gpus all`: Enables GPU support for the container (requires NVIDIA drivers and Docker GPU support).
+- `--net=host`: Shares the network namespace with the host.
+- `--privileged`: Grants the container access to host resources (e.g., GPUs).
+
+This will just perform the training, exit, and delete the container. If you want to launch a shell inside the container, you can run the following command:
+
+```bash
+docker run -it --rm --gpus all train /bin/bash
+```
+
+This will open a shell inside the container, allowing you to interact with it. To train the model, you can run the following command inside the container:
+
+```bash
+invoke train
+```
+
+To evaluate the model, you can run the following command:
+
+```bash
+invoke evaluate
 ```

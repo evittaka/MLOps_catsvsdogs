@@ -1,0 +1,5 @@
+defaults:
+  - data_config
+  - model_config
+  - training_config
+  - evaluate_config
