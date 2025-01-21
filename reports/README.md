@@ -179,7 +179,7 @@ We use requirements.txt and requirements-dev.txt to manage our dependencies. The
 >
 > Answer:
 
-From a cookiecutter template we have filled out the requirement.txt files, pyproject.toml, .gitignore, .pre-commit-config.yaml, files in tests directory, also files in src/catsvsdogs directory, reports directory, saved the model in models directory, saved the logs in logs directory, moreover filled dockerfiles and data directories. Also, filled dependency files in dependency folder. So, overall we use all the best from coockiecutter template. We didn't remove anything. 
+From a cookiecutter template we have filled out the requirement.txt files, pyproject.toml, .gitignore, .pre-commit-config.yaml, files in tests directory, also files in src/catsvsdogs directory, reports directory, saved the model in models directory, saved the logs in logs directory, moreover filled dockerfiles and data directories. Also, filled dependency files in dependency folder. So, overall we use all the best from coockiecutter template. We didn't remove anything.
 
 ### Question 6
 
