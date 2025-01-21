@@ -3,12 +3,12 @@ from datetime import datetime
 import hydra
 import matplotlib.pyplot as plt
 import torch
+import wandb
 from google.cloud import storage
 from loguru import logger
 from omegaconf import DictConfig
 from pytorch_lightning import Trainer
 
-import wandb
 from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import MobileNetV3
 
