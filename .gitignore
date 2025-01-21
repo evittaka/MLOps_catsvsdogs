@@ -190,3 +190,4 @@ lightning_logs/
 # wandb
 wandb/
 /data
+/models

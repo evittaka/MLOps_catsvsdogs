@@ -1,7 +1,10 @@
+from datetime import datetime
+
 import hydra
 import matplotlib.pyplot as plt
 import torch
 import wandb
+from google.cloud import storage
 from loguru import logger
 from omegaconf import DictConfig
 from pytorch_lightning import Trainer
@@ -16,6 +19,37 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.ba
 
 def loss_function():
     return torch.nn.CrossEntropyLoss()
+
+
+def upload_model_to_gcs():
+    """
+    Uploads the trained model to Google Cloud Storage with both a timestamped and a latest version filename.
+    """
+    bucket_name = "mlops_catsvsdogs"  # Your GCS bucket name
+    source_file_path = "models/model.pth"  # Local trained model path
+
+    # Define GCS destination filenames
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    destination_blob_name_timestamped = f"models/model_{timestamp}.pth"
+    destination_blob_name_latest = "models/model_latest.pth"
+
+    try:
+        # Initialize the GCS client
+        client = storage.Client()
+        bucket = client.bucket(bucket_name)
+
+        # Upload the timestamped model
+        blob_timestamped = bucket.blob(destination_blob_name_timestamped)
+        blob_timestamped.upload_from_filename(source_file_path)
+        logger.info(f"Model uploaded to gs://{bucket_name}/{destination_blob_name_timestamped}")
+
+        # Upload the latest model
+        blob_latest = bucket.blob(destination_blob_name_latest)
+        blob_latest.upload_from_filename(source_file_path)
+        logger.info(f"Model uploaded to gs://{bucket_name}/{destination_blob_name_latest}")
+
+    except Exception as e:
+        logger.error(f"Failed to upload model to GCS: {e}")
 
 
 @hydra.main(version_base=None, config_path="../../configs", config_name="config")
@@ -55,6 +89,8 @@ def train(cfg: DictConfig) -> None:
     artifact.add_file("models/model.pth")
     wandb_run.log_artifact(artifact)
     logger.info("Model saved to models/model.pth")
+    upload_model_to_gcs()
+    logger.info("Model uploaded to GCS")
 
     # Save training statistics as a figure
     fig, axs = plt.subplots(1, 2, figsize=(15, 5))
