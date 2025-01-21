@@ -47,8 +47,14 @@ WORKDIR /workspace/MLOps_catsvsdogs
 # Install Python dependencies from requirements.txt and requirements_dev.txt
 RUN pip install --no-cache-dir -r requirements.txt && pip install -r requirements_dev.txt && pip install -e .
 
+RUN mkdir -p data/processed
+
 # Copy data from Google Cloud Storage
-RUN gsutil -m cp -r gs://mlops_catsvsdogs/* .
+RUN gsutil -m cp -r gs://mlops_catsvsdogs/data/processed/* ./data/processed/
+
+RUN wandb login --relogin ae15357077efc1030be7897029c1176a93502df0
+
+RUN mkdir -p models/
 
 # Add entrypoint script
 ENTRYPOINT ["/bin/bash", "-c"]
