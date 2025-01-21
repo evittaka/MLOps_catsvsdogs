@@ -54,6 +54,8 @@ RUN gsutil -m cp -r gs://mlops_catsvsdogs/data/processed/* ./data/processed/
 
 RUN wandb login --relogin ae15357077efc1030be7897029c1176a93502df0
 
+RUN mkdir -p models/
+
 # Add entrypoint script
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["invoke train"]
