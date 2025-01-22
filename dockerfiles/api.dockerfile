@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN ls -la
 
-COPY ../src/catsvsdogs/api.py api.py
+COPY /src/catsvsdogs/api.py api.py
 
 RUN apt-get update && apt-get install -y \
     build-essential \
