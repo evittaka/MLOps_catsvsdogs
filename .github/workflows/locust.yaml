@@ -1,0 +1,66 @@
+name: Locust Load Test
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  deploy-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Deploy Cloud Run service
+        run: |
+          gcloud config set project dtumlops-448016
+          gcloud builds submit --tag gcr.io/dtumlops-448016/api-catsvsdogs:latest .
+          gcloud run deploy api-catsvsdogs --image gcr.io/dtumlops-448016/api-catsvsdogs:latest --region europe-west1
+
+      - name: Wait for Cloud Run deployment
+        run: |
+          while true; do
+            status=$(gcloud run services describe api-catsvsdogs --region europe-west1 --format="value(status)")
+            echo "Cloud Run service status: $status"
+            if echo "$status" | grep -q "READY"; then
+              echo "Cloud Run service is READY"
+              break
+            fi
+            sleep 30
+          done
+
+      - name: Get Deployed Model URL
+        id: get-url
+        run: |
+          PROJECT_ID="dtumlops-448016"
+          SERVICE_NAME="api-catsvsdogs"
+          REGION="europe-west1"
+          URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.url)")
+          echo "DEPLOYED_MODEL_URL=$URL" >> $GITHUB_OUTPUT
+
+      - name: Run load test
+        env:
+          DEPLOYED_MODEL_URL: ${{ steps.get-url.outputs.DEPLOYED_MODEL_URL }}
+          LOCUST_USERS: "100"
+          LOCUST_RATE: "10"
+          LOCUST_RUNTIME: "10m"
+        run: |
+          locust -f tests/performance_test/locust.py \
+            --headless -u ${{ env.LOCUST_USERS }} -r ${{ env.LOCUST_RATE }} --run-time ${{ env.LOCUST_RUNTIME }} --host=${{ env.DEPLOYED_MODEL_URL }} --csv=locust_results.csv
+
+          if [ $? -ne 0 ]; then
+            echo "Locust test failed. Check locust logs for details."
+            exit 1
+          fi
+
+      - name: Upload locust results
+        uses: actions/upload-artifact@v4
+        with:
+          name: locust-results
+          path: locust_results.csv
