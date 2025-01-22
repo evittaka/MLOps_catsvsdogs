@@ -8,7 +8,7 @@ import streamlit as st
 def classify_image(image, backend):
     """Send the image to the backend for classification."""
     predict_url = f"{backend}/predict"
-    response = requests.post(predict_url, files={"data": image}, timeout=10)
+    response = requests.post(predict_url, files={"data": image}, timeout=50)
     if response.status_code == 200:
         return response.json()
     return None
