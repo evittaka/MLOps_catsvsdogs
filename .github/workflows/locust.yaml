@@ -20,10 +20,7 @@ jobs:
           cache-dependency-path: setup.py
       - run: |
           python -m pip install -U pip setuptools wheel
-          pip install -r requirements.txt
-          pip install -r requirements_dev.txt
-          pip install -e .
-          pip list
+          pip install locust
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v0
@@ -59,10 +56,10 @@ jobs:
           LOCUST_RUNTIME: "1m"
         run: |
           locust -f tests/performance_test/locust.py \
-            --headless -u ${{ env.LOCUST_USERS }} -r ${{ env.LOCUST_RATE }} --run-time ${{ env.LOCUST_RUNTIME }} --host=${{ env.DEPLOYED_MODEL_URL }} --csv=locust_results.csv
+            --headless -u ${{ env.LOCUST_USERS }} -r ${{ env.LOCUST_RATE }} --run-time ${{ env.LOCUST_RUNTIME }} --host=${{ env.DEPLOYED_MODEL_URL }} --csv=/locust/results
 
       - name: Upload locust results
         uses: actions/upload-artifact@v4
         with:
           name: locust-results
-          path: locust_results.csv
+          path: /locust
