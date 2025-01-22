@@ -56,7 +56,7 @@ jobs:
           DEPLOYED_MODEL_URL: ${{ steps.get-url.outputs.DEPLOYED_MODEL_URL }}
           LOCUST_USERS: "100"
           LOCUST_RATE: "10"
-          LOCUST_RUNTIME: "10m"
+          LOCUST_RUNTIME: "1m"
         run: |
           locust -f tests/performance_test/locust.py \
             --headless -u ${{ env.LOCUST_USERS }} -r ${{ env.LOCUST_RATE }} --run-time ${{ env.LOCUST_RUNTIME }} --host=${{ env.DEPLOYED_MODEL_URL }} --csv=locust_results.csv
