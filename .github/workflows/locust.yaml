@@ -56,10 +56,10 @@ jobs:
           LOCUST_RUNTIME: "1m"
         run: |
           locust -f tests/performance_test/locust.py \
-            --headless -u ${{ env.LOCUST_USERS }} -r ${{ env.LOCUST_RATE }} --run-time ${{ env.LOCUST_RUNTIME }} --host=${{ env.DEPLOYED_MODEL_URL }} --csv=/locust/results
+            --headless -u ${{ env.LOCUST_USERS }} -r ${{ env.LOCUST_RATE }} --run-time ${{ env.LOCUST_RUNTIME }} --host=${{ env.DEPLOYED_MODEL_URL }} --csv=locust/locust
 
       - name: Upload locust results
         uses: actions/upload-artifact@v4
         with:
           name: locust-results
-          path: /locust
+          path: locust/locust*.csv
