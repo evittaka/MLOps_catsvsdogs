@@ -1,17 +1,26 @@
-# Change from latest to a specific version if your requirements.txt
-FROM python:3.11-slim AS base
+FROM python:3.11-slim
 
-RUN apt update && \
-    apt install --no-install-recommends -y build-essential gcc && \
-    apt clean && rm -rf /var/lib/apt/lists/*
+EXPOSE 8080
+WORKDIR /app
 
-COPY src src/
-COPY requirements.txt requirements.txt
-COPY requirements_dev.txt requirements_dev.txt
-COPY README.md README.md
-COPY pyproject.toml pyproject.toml
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    software-properties-common \
+    libjpeg-dev \
+    zlib1g-dev \
+    libgl1-mesa-glx \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN pip install -r requirements.txt --no-cache-dir --verbose
-RUN pip install . --no-deps --no-cache-dir --verbose
+# Install Python dependencies
+RUN pip install --no-cache-dir \
+    torch torchvision timm \
+    fastapi \
+    pillow \
+    google-cloud-storage \
+    uvicorn \
+    python-multipart
 
-ENTRYPOINT ["uvicorn", "src/catsvsdogs/api:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY src/catsvsdogs/api.py api.py
+
+CMD exec uvicorn api:app --port 8080 --host 0.0.0.0 --workers 1
