@@ -3,7 +3,7 @@ name: Locust Load Test
 on:
   push:
     branches:
-      - '*'
+      - 'main'
 
 jobs:
   deploy-and-test:
