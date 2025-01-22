@@ -25,6 +25,9 @@ RUN pip install --no-cache-dir \
 
 RUN git clone https://github.com/evittaka/MLOps_catsvsdogs.git /workspace/MLOps_catsvsdogs
 
+# checkout to branch
+RUN cd /workspace/MLOps_catsvsdogs && git checkout prometheus_system_metrics
+
 # Move MLOps_catsvsdogs/src/catsvsdogs/api.py to /app
 RUN cp /workspace/MLOps_catsvsdogs/src/catsvsdogs/api.py /app
 
