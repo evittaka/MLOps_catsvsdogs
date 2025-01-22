@@ -3,6 +3,8 @@ FROM python:3.11-slim
 EXPOSE 8080
 WORKDIR /app
 
+RUN ls -la
+
 COPY ../src/catsvsdogs/api.py api.py
 
 RUN apt-get update && apt-get install -y \
