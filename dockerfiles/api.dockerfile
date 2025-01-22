@@ -21,6 +21,6 @@ RUN pip install --no-cache-dir \
     uvicorn \
     python-multipart
 
-COPY ./src/catsvsdogs/api.py api.py
+COPY /src/catsvsdogs/api.py api.py
 
 CMD exec uvicorn api:app --port 8080 --host 0.0.0.0 --workers 1
