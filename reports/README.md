@@ -87,7 +87,7 @@ will check the repositories and the code to verify your answers.
 * [x] Create a FastAPI application that can do inference using your model (M22)
 * [x] Deploy your model in GCP using either Functions or Run as the backend (M23)
 * [ ] Write API tests for your application and setup continues integration for these (M24)
-* [ ] Load test your application (M24)
+* [x] Load test your application (M24)
 * [ ] Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
 * [ ] Create a frontend for your API (M26)
 
@@ -573,7 +573,21 @@ A request can be made like this:
 >
 > Answer:
 
---- question 25 fill here ---
+# TODO: add unit testing
+
+Below are the results of the load testing we performed on our API deployed on Google Cloud Run:
+
+| **Metric**             | **Value**                |
+|-------------------------|--------------------------|
+| **Request Count**       | 562                      |
+| **Median Response Time**| 820 ms                   |
+| **Average Response Time**| 3593.86 ms              |
+| **Min Response Time**   | 73.58 ms                 |
+| **Max Response Time**   | 22910 ms (~23 seconds)   |
+
+We used Locust to perform the load testing, simulating 50 users with a hatch rate of 10 users per second. The results showed that the API could handle a moderate load, with a median response time of 820 ms and an average response time of 3593.86 ms. However, this last metric was skewed by a few requests that took up to 23 seconds to complete.
+
+One limitation was that multiple simultaneous requests resulted in running out of the limited memory that the Cloud Run had available, causing the service to crash and restart.
 
 ### Question 26
 
