@@ -4,13 +4,13 @@ import os
 import timm
 import torch
 from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import PlainTextResponse
 from google.cloud import storage
 from PIL import Image
-from prometheus_client import Counter, Histogram, generate_latest
+from prometheus_client import Counter, Histogram, make_asgi_app
 from torchvision import transforms
 
 app = FastAPI()
+app.mount("/metrics", make_asgi_app())
 
 # Configuration
 MODEL_BUCKET_NAME = "mlops_catsvsdogs"
@@ -116,17 +116,6 @@ async def predict(data: UploadFile = File(...)):  # noqa: B008
     except Exception as e:
         ERROR_COUNT.inc()  # Increment error count
         raise RuntimeError(f"Failed to make prediction: {str(e)}") from e
-
-
-@app.get("/metrics", response_class=PlainTextResponse)
-async def metrics():
-    """
-    Expose Prometheus metrics at the /metrics endpoint.
-
-    Returns:
-        PlainTextResponse: Prometheus metrics in plain text format.
-    """
-    return generate_latest()
 
 
 if __name__ == "__main__":
