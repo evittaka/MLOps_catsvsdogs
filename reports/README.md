@@ -365,7 +365,22 @@ Whenever an experiment is run, the exact configuration of all parameters is stor
 >
 > Answer:
 
---- question 15 fill here ---
+Yes, we created a Dockerfile for training, leveraging data stored in our Google Cloud Bucket. The Dockerfile is available at: [europe-west1-docker.pkg.dev/dtumlops-448016/mlops-50-docker/mlops-app-cloud](europe-west1-docker.pkg.dev/dtumlops-448016/mlops-50-docker/mlops-app-cloud).
+
+To run the training image, we used the following commands. This will build the image and run the training pipeline:
+
+```bash
+docker build -f train.dockerfile . -t train:latest
+docker run -it --rm --gpus all train
+```
+
+Additionally, interactive mode was possible using:
+
+```bash
+docker run -it --rm --gpus all train /bin/bash
+```
+
+TODO: ADD API AND FRONTEND DOCKERFILE
 
 ### Question 16
 
@@ -483,7 +498,20 @@ Although lag was significant while working on this instance, we managed to run o
 >
 > Answer:
 
---- question 22 fill here ---
+Yes, we managed to train our model in the cloud using **Vertex AI**. We executed the training job using the following command:
+
+```bash
+gcloud ai custom-jobs create \
+    --region=europe-west2 \
+    --display-name=test-run \
+    --config=config.yaml
+```
+
+The training process took almost 5 hours to complete due to the fact that we utilized only a CPU instance, as GPU-backed Vertex AI instances encountered persistent configuration errors. Despite this limitation, the managed infrastructure provided by Vertex AI ensured a seamless execution of the training pipeline.
+
+Once the training was completed, the trained model was automatically uploaded to Google Cloud Buckets for storage and to Weights & Biases (W&B) as an artifact for experiment tracking and reproducibility. This setup allowed us to efficiently manage and retrieve the trained model for further evaluation and deployment.
+
+
 
 ## Deployment
 
