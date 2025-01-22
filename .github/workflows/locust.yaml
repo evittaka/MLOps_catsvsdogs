@@ -61,11 +61,6 @@ jobs:
           locust -f tests/performance_test/locust.py \
             --headless -u ${{ env.LOCUST_USERS }} -r ${{ env.LOCUST_RATE }} --run-time ${{ env.LOCUST_RUNTIME }} --host=${{ env.DEPLOYED_MODEL_URL }} --csv=locust_results.csv
 
-          if [ $? -ne 0 ]; then
-            echo "Locust test failed. Check locust logs for details."
-            exit 1
-          fi
-
       - name: Upload locust results
         uses: actions/upload-artifact@v4
         with:
