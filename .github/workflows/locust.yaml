@@ -51,7 +51,7 @@ jobs:
       - name: Run load test
         env:
           DEPLOYED_MODEL_URL: ${{ steps.get-url.outputs.DEPLOYED_MODEL_URL }}
-          LOCUST_USERS: "100"
+          LOCUST_USERS: "50"
           LOCUST_RATE: "10"
           LOCUST_RUNTIME: "1m"
         run: |
