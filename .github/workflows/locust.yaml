@@ -22,8 +22,8 @@ jobs:
           while true; do
             status=$(gcloud run services describe mlops-catsvsdogs --region us-central1 --format="value(status)")
             echo "Cloud Run service status: $status"
-            if echo "$status" | grep -q "READY"; then
-              echo "Cloud Run service is READY"
+            if echo "$status" | grep -q "Ready"; then
+              echo "Cloud Run service is Ready"
               break
             fi
             sleep 30
