@@ -20,7 +20,8 @@ RUN pip install --no-cache-dir \
     pillow \
     google-cloud-storage \
     uvicorn \
-    python-multipart
+    python-multipart \
+    prometheus_client
 
 RUN git clone https://github.com/evittaka/MLOps_catsvsdogs.git /workspace/MLOps_catsvsdogs
 

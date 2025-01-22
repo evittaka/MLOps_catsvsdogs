@@ -4,8 +4,10 @@ import os
 import timm
 import torch
 from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import PlainTextResponse
 from google.cloud import storage
 from PIL import Image
+from prometheus_client import Counter, Histogram, generate_latest
 from torchvision import transforms
 
 app = FastAPI()
@@ -14,6 +16,11 @@ app = FastAPI()
 MODEL_BUCKET_NAME = "mlops_catsvsdogs"
 MODEL_FILE = "models/model_latest.pth"  # This will always be the latest model
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Prometheus Metrics
+REQUEST_COUNT = Counter("predict_requests_total", "Total number of /predict requests")
+ERROR_COUNT = Counter("predict_errors_total", "Total number of errors during /predict")
+RESPONSE_TIME = Histogram("predict_response_time_seconds", "Response time for /predict endpoint")
 
 # Initialize GCP storage client
 client = storage.Client()
@@ -67,15 +74,16 @@ except RuntimeError as e:
     description="""
     Upload an image file, and the model will classify it as either a "cat" or a "dog".
 
-    ### Request:
-    - **data**: An image file (e.g., JPG, PNG).
+    Request:
+    - data: An image file (e.g., JPG, PNG).
 
-    ### Response:
-    - **prediction**: The class label ("cat" or "dog").
-    - **probability**: List of probabilities for each class, rounded to 2 decimal places.
+    Response:
+    - prediction: The class label ("cat" or "dog").
+    - probability: List of probabilities for each class, rounded to 2 decimal places.
     """,
 )
-def predict(data: UploadFile = File(...)):  # noqa: B008
+@RESPONSE_TIME.time()  # Measure response time
+async def predict(data: UploadFile = File(...)):  # noqa: B008
     """
     Predict whether the uploaded image is of a cat or a dog.
 
@@ -85,7 +93,10 @@ def predict(data: UploadFile = File(...)):  # noqa: B008
     Returns:
         dict: A dictionary containing the predicted class label and class probabilities.
     """
+    REQUEST_COUNT.inc()  # Increment request count
+
     if model is None:
+        ERROR_COUNT.inc()  # Increment error count
         return {"error": "Model not loaded. Please check server logs."}
 
     try:
@@ -103,7 +114,19 @@ def predict(data: UploadFile = File(...)):  # noqa: B008
             probability = [round(p, 2) for p in probability]
             return {"prediction": prediction, "probability": probability}
     except Exception as e:
+        ERROR_COUNT.inc()  # Increment error count
         raise RuntimeError(f"Failed to make prediction: {str(e)}") from e
+
+
+@app.get("/metrics", response_class=PlainTextResponse)
+async def metrics():
+    """
+    Expose Prometheus metrics at the /metrics endpoint.
+
+    Returns:
+        PlainTextResponse: Prometheus metrics in plain text format.
+    """
+    return generate_latest()
 
 
 if __name__ == "__main__":
