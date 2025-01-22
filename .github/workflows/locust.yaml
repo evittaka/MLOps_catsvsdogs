@@ -20,7 +20,7 @@ jobs:
       - name: Wait for Cloud Run deployment
         run: |
           while true; do
-            status=$(gcloud run services describe api-catsvsdogs --region europe-west1 --format="value(status)")
+            status=$(gcloud run services describe mlops-catsvsdogs --region europe-west1 --format="value(status)")
             echo "Cloud Run service status: $status"
             if echo "$status" | grep -q "READY"; then
               echo "Cloud Run service is READY"
@@ -33,7 +33,7 @@ jobs:
         id: get-url
         run: |
           PROJECT_ID="dtumlops-448016"
-          SERVICE_NAME="api-catsvsdogs"
+          SERVICE_NAME="mlops-catsvsdogs"
           REGION="europe-west1"
           URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.url)")
           echo "DEPLOYED_MODEL_URL=$URL" >> $GITHUB_OUTPUT
