@@ -1,11 +1,13 @@
 FROM python:3.11-slim
 
 EXPOSE 8080
+
 WORKDIR /app
 
-RUN ls -la
+RUN git clone https://github.com/evittaka/MLOps_catsvsdogs.git /workspace/MLOps_catsvsdogs
 
-COPY /src/catsvsdogs/api.py api.py
+# Move MLOps_catsvsdogs/src/catsvsdogs/api.py to /app
+RUN cp /workspace/MLOps_catsvsdogs/src/catsvsdogs/api.py /app
 
 RUN apt-get update && apt-get install -y \
     build-essential \
