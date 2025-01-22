@@ -17,12 +17,6 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Deploy Cloud Run service
-        run: |
-          gcloud config set project dtumlops-448016
-          gcloud builds submit --tag gcr.io/dtumlops-448016/api-catsvsdogs:latest .
-          gcloud run deploy api-catsvsdogs --image gcr.io/dtumlops-448016/api-catsvsdogs:latest --region europe-west1
-
       - name: Wait for Cloud Run deployment
         run: |
           while true; do
