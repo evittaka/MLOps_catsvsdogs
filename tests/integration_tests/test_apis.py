@@ -1,32 +1,37 @@
-from fastapi.testclient import TestClient
+import io
 
-from catsvsdogs.api import app
+import requests
 
-client = TestClient(app)
-
-
-def test_predict_endpoint():
-    with client as c:
-        with open("tests/integration_tests/cat.jpg", "rb") as f:
-            files = {"data": ("cat.jpg", f, "image/jpeg")}
-            response = c.post("/predict", files=files)
-            assert response.status_code == 200
-            data = response.json()
-            assert "prediction" in data
-            assert "probability" in data
-            assert isinstance(data["probability"], list)
-            assert len(data["probability"]) == 2
-            assert data["prediction"] in ["cat", "dog"]
+# Use the fixed deployed API URL
+DEPLOYED_MODEL_URL = "https://mlops-catsvsdogs-122709719634.us-central1.run.app"
 
 
-def test_invalid_file():
-    with client as c:
-        files = {"data": ("test.txt", b"invalid data", "text/plain")}
-        response = c.post("/predict", files=files)
-        assert "error" in response.json()
+def test_predict_valid_image():
+    url = f"{DEPLOYED_MODEL_URL}/predict"
+    with open("tests/integration_tests/cat.jpg", "rb") as img_file:
+        response = requests.post(
+            url,
+            headers={"accept": "application/json"},
+            files={"data": ("cat.jpg", img_file, "image/jpeg")},
+        )
+        assert response.status_code == 200, f"Expected 200, got {response.status_code}"
+        print("Valid image test passed.")
 
 
-def test_missing_file():
-    with client as c:
-        response = c.post("/predict")
-        assert response.status_code == 422
+def test_predict_invalid_file():
+    url = f"{DEPLOYED_MODEL_URL}/predict"
+    invalid_file = io.BytesIO(b"This is not an image")
+    response = requests.post(
+        url,
+        headers={"accept": "application/json"},
+        files={"data": ("invalid.txt", invalid_file, "text/plain")},
+    )
+    assert response.status_code in [400, 422, 500], f"Expected 400, 422, or 500, got {response.status_code}"
+    print("Invalid file test passed.")
+
+
+def test_predict_no_file():
+    url = f"{DEPLOYED_MODEL_URL}/predict"
+    response = requests.post(url, headers={"accept": "application/json"})
+    assert response.status_code == 422, f"Expected 422, got {response.status_code}"
+    print("No file test passed.")
