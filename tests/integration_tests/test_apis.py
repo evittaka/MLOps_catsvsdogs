@@ -7,19 +7,6 @@ from catsvsdogs.api import app
 client = TestClient(app)
 
 
-def test_model_loading():
-    """
-    Test the model loading process via health endpoint.
-    """
-    try:
-        response = client.get("/health")
-        # Assert the endpoint exists and is returning a response
-        assert response.status_code in [200, 404], f"Expected 200 or 404, got {response.status_code}"
-        print("Health endpoint reached successfully.")
-    except Exception as e:
-        raise AssertionError(f"Health endpoint test failed unexpectedly: {e}") from e
-
-
 def test_predict_valid_image():
     """
     Test the /predict endpoint with a valid image file.

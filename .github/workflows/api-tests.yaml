@@ -25,10 +25,10 @@ jobs:
 
       - name: Run API tests
         run: |
-          pytest tests/integration_tests/test_apis.py --maxfail=1 --disable-warnings -v
+          pytest tests/integration_tests/test_apis.py --maxfail=1 --disable-warnings --junit-xml=pytest-results.xml -v
 
       - name: Upload pytest results
         uses: actions/upload-artifact@v4
         with:
           name: pytest-results
-          path: pytest*.xml
+          path: pytest-results.xml
