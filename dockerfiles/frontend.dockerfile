@@ -5,7 +5,7 @@ RUN apt update && \
     apt install --no-install-recommends -y build-essential gcc && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
-COPY src src/
+RUN git clone https://github.com/evittaka/MLOps_catsvsdogs.git /workspace/MLOps_catsvsdogs
 COPY requirements_frontend.txt requirements_frontend.txt
 
 RUN pip install -r requirements_frontend.txt --no-cache-dir --verbose
