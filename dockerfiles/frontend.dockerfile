@@ -1,9 +1,14 @@
 # Change from latest to a specific version if your requirements.txt
 FROM python:3.11-slim AS base
 
-RUN apt update && \
-    apt install --no-install-recommends -y build-essential gcc && \
-    apt clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    software-properties-common \
+    libjpeg-dev \
+    zlib1g-dev \
+    libgl1-mesa-glx \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/evittaka/MLOps_catsvsdogs.git /workspace/MLOps_catsvsdogs
 COPY requirements_frontend.txt requirements_frontend.txt
