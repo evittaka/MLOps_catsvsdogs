@@ -18,5 +18,5 @@ mkdocstrings-python==1.12.2
 
 # api-testing
 httpx==0.24.0
-fastapi==0.95.1
-pydantic==1.10.7
+fastapi==0.115.6
+pydantic==2.10.5
