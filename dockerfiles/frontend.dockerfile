@@ -14,8 +14,8 @@ RUN git clone https://github.com/evittaka/MLOps_catsvsdogs.git /workspace/MLOps_
 
 RUN pip install -r /workspace/MLOps_catsvsdogs/requirements_frontend.txt --no-cache-dir --verbose
 
-EXPOSE 8501
+EXPOSE 8080
 
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-ENTRYPOINT ["streamlit", "run", "/workspace/MLOps_catsvsdogs/src/catsvsdogs/frontend.py", "--server.port=8501", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "/workspace/MLOps_catsvsdogs/src/catsvsdogs/frontend.py", "--server.port=8080", "--server.address=0.0.0.0"]
