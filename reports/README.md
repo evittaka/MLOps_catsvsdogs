@@ -680,7 +680,7 @@ Overall, the cloud provided flexibility and scalability, allowing us to experime
 >
 > Answer:
 
-We implemented a frontend based on streamlit for the prediction API. We believe it wraps the project very nicely, as the frontend of this type of model closely resembles how a user would use it in the real world. The frontend is part of the continuous development, and is deployed on Cloud Run when a pull request is merged into main. This makes the usage of the model very straight-forward, and additional functionality would be easy to implement. The frontend with a prediction of a picture not in the training set can be seen here [this figure](figures/frontend.png)
+We implemented a frontend based on streamlit for the prediction API. We believe it wraps the project very nicely, as the frontend of this type of model closely resembles how a user would use it in the real world. The frontend is part of the continuous development, and is deployed on Cloud Run when a pull request is merged into main. This makes the usage of the model very straight-forward, and additional functionality would be easy to implement. The frontend with a prediction of a picture not in the training set can be seen here ![this figure](figures/frontend.png)
 
 ### Question 29
 
