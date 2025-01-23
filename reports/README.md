@@ -227,7 +227,7 @@ In larger projects, having a tidy and consistent code is very important. Since m
 >
 > Answer:
 
-We implemented three test-files with four different test functions. Two of the tests are parameterised which tests a wide array of parameters, and most test functions include multiple assert statements. In total 16 tests are run. We are primarely testing the model pipeline, which includes checks if data is of the correct type, and that the model input and outputs are the correct shape, size and type. In order to run the unittests on github, we check if the data path exists, and if not, we skip the data tests. Most often the unittests on github therefore contain 15 tests and 1 skipped.
+We implemented three test-files with four different test functions. Two of the tests are parameterised which tests a wide array of parameters, and most test functions include multiple assert statements. In total 16 tests are run. We primarel test the model pipeline, which includes checks if data is of the correct type, and that the model input and outputs are the correct shape, size and type. To run the unittests on github, we check if the data path exists, and if not, we skip the data tests. Most often the unittests on github therefore contain 15 tests and 1 skipped.
 
 ### Question 8
 
@@ -321,7 +321,9 @@ In the end, it helped us in tracking scenarios where our processed data would ch
 
 Our project includes continuous integration (CI) workflows to ensure code consistency across different platforms. We run unit tests on Windows, Ubuntu, and MacOS to verify functionality on various operating systems. While these tests are not required for merging PRs, we try to ensure they pass. To optimize test performance, we added caching for shared dependencies, which significantly reduced runtime.
 
-For code formatting, we initially set up a workflow to run `ruff check .` and `ruff format .` without making changes to the code. Later, we added a pre-commit workflow to automatically fix formatting issues. However, as mentioned before, inconsistencies appeared between local formatting and GitHub results, even when using identical versions. To resolve this, we integrated [pre-commit.ci](https://pre-commit.ci/), a bot that fixes formatting issues and pushes updates directly to the repository. A sample commit from the pre-commit bot is available [here](https://github.com/DevJav/MLOps_catsvsdogs/pull/39/commits/b97ded1a16a1d4d31e08c5c228341f098b714f2d).
+For code formatting, we initially set up a workflow on GitHub to run `ruff check .` and `ruff format .` without making changes to the code. Later, we added a pre-commit workflow to automatically fix formatting issues. However, as mentioned before, inconsistencies appeared between local formatting and GitHub results, even when using identical versions. To resolve this, we integrated [pre-commit.ci](https://pre-commit.ci/), a bot that fixes formatting issues and pushes updates directly to the repository. A sample commit from the pre-commit bot is available [here](https://github.com/DevJav/MLOps_catsvsdogs/pull/39/commits/b97ded1a16a1d4d31e08c5c228341f098b714f2d). This was a nice addition as this way the developer does not have to worry about the formatting, and can focus on the code.
+
+After adding cloud functions, Google Cloud automatically also added a check that make sure that the different dockerfiles are built correctly. This way we ensure no changes have effect on the deployed version of the code.
 
 ## Running code and tracking experiments
 
@@ -417,7 +419,7 @@ Additionally, interactive mode was possible using:
 docker run -it --rm --gpus all train /bin/bash
 ```
 
-TODO: ADD API AND FRONTEND DOCKERFILE
+To deploy the API interface, we also created a Dockerfile. This consisted in taking the `api.py` file and wrapping it into a container. It loads the latest model and starts the FastAPI server. After that, to have a nice frontend to use the API, we also created a Dockerfile for the frontend.
 
 ### Question 16
 
@@ -432,7 +434,9 @@ TODO: ADD API AND FRONTEND DOCKERFILE
 >
 > Answer:
 
---- question 16 fill here ---
+We didn’t settle on a standard debugging method, but because of our inexperience, we often relied on print statements to debug our code. We also used the VSCode debugger, which is a really straightforward and visual way to debug, as it lets you see all the variables and their current values at the moment of a breakpoint.
+
+A worse experience was when things failed during cloud deployment. Navigating the logs there was much harder, with weird formatting that made it difficult to figure out what was happening. We would’ve liked a better way to debug cloud deployments, but we didn’t have the time to set that up.
 
 ## Working in the cloud
 
@@ -639,7 +643,7 @@ One limitation was that multiple simultaneous requests resulted in running out o
 >
 > Answer:
 
---- question 26 fill here ---
+We attempted to implement monitoring for our API using Prometheus, following the guidelines provided in module M28. Unfortunately, we faced some challenges during the setup process and were unable to complete the implementation due to time constraints. The plan was to monitor key performance metrics such as response time, request count, and error rate, which would have given us valuable insights into potential issues and areas for optimization. While we couldn’t fully achieve this, we did have access to metrics and alerts from the Google cloud environment. Although not as detailed or effective as Prometheus, it still provided us with some level of monitoring to keep track of the service's performance.
 
 ## Overall discussion of project
 
@@ -658,14 +662,13 @@ One limitation was that multiple simultaneous requests resulted in running out o
 >
 > Answer:
 
-
 All team members used the same cloud project, sharing the available credits. We spent **$14.66**, with the most expensive service being **Compute Engine**, which cost **$9.73** due to running GPU instances for training. Other significant costs came from **Artifact Registry ($3.50)** and **Vertex AI ($0.89)**, which were used for model storage and training.
 
 Working in the cloud had a learning curve. Initially, we faced challenges with user permissions and accessing different services, which slowed us down. Setting up roles and ensuring the correct permissions for each team member took some time. However, once we resolved these issues, things went smoothly, and deployment became more efficient.
 
 Overall, the cloud provided flexibility and scalability, allowing us to experiment with different configurations without hardware limitations. At the beginning we were a bit worried about overspending, but in the end we realised we could have probably used more demanding and thus expensive services, as the costs were quite low for the project.
 
-Additionally, for the continuous integration with GitHub actions, we used far more than the 2.000 compute minutes available (>4.000 minutes) for private repositories. As this is a public repository, there is no limit, which is also why we were not worried about this. However, this might need to be considered in the case of running extensive testing or workflows on private repositories.
+Additionally, for the CI with GitHub actions, we used far more than the 2.000 compute minutes available (>4.000 minutes) for private repositories. As this is a public repository, there is no limit, which is also why we were not worried about this.
 
 
 ### Question 28

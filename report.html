@@ -1,0 +1,108 @@
+<p>roject is undertaken by Group 50 as part of the 02476 Machine Learning Operations course at DTU. The primary objective is to apply the principles and techniques learned during the course to solve a machine learning problem. We aim to leverage one of the provided frameworks to build a scalable and well-structured solution. As an outcome, we could expect to be gained a profficiency in MLOps tools such as, Docker, Hydra, WanDB, Cloud services and many more.</p>
+<h2>Framework</h2>
+<p>For this project, we have chosen the TIMM (PyTorch Image Models) framework, specifically designed for computer vision tasks. TIMM offers a wide selection of pre-trained models that can be fine-tuned to suit our needs. This framework is particularly advantageous due to its robust integration with PyTorch, streamlined APIs, and access to cutting-edge architectures. Using TIMM, we will construct and experiment with state-of-the-art deep learning models. As part of this process, we will set up the TIMM framework within our development environment, ensuring that our codebase is clean, modular, and well-managed through version control.</p>
+<h2>Data</h2>
+<p>The dataset selected for this project is the Cats vs Dogs dataset from Kaggle. This dataset consists of 25,000 labeled images of cats and dogs, making it ideal for a binary image classification task. The dataset is well-suited for our goal of exploring and benchmarking convolutional neural networks (CNNs). The images are diverse in terms of size, lighting, and orientation, which presents unique challenges for model training. Before feeding the data into our models, we will perform preprocessing steps such as resizing, normalization, and augmentation to enhance model performance.</p>
+<h2>Models</h2>
+<p>Our task is to perform binary image classification on the Cats vs Dogs dataset. Initially, we will develop a baseline CNN model to establish a point of reference. Subsequently, we will explore and compare the performance of advanced models available in the TIMM framework, including ConvNeXt, MobileNet V3, ResNet, and VGG. This comparison will help us understand the strengths and trade-offs of each model in terms of accuracy, computational efficiency, and scalability.</p>
+<hr />
+<h2>Instructions</h2>
+<h3>Setup</h3>
+<ol>
+<li>
+<p>Clone the repository</p>
+</li>
+<li>
+<p>Create a virtual environment</p>
+</li>
+</ol>
+<p><code>bash
+conda create -n mlops python=3.11 -y
+conda activate mlops</code></p>
+<ol>
+<li>Install invoke</li>
+</ol>
+<p><code>bash
+pip install invoke</code></p>
+<ol>
+<li>Install the required packages</li>
+</ol>
+<p><code>bash
+invoke requirements</code></p>
+<p>or if in development mode</p>
+<p><code>bash
+invoke dev-requirements</code></p>
+<ol>
+<li>Install the pre-commit hooks</li>
+</ol>
+<p><code>bash
+pre-commit install</code></p>
+<h3>Data</h3>
+<p>The dataset is available on Kaggle at the following link: <a href="https://www.kaggle.com/datasets/shaunthesheep/microsoft-catsvsdogs-dataset">Cats-vs-Dogs</a>.</p>
+<p>To download it, first you need a Kaggle token. To this go to your <a href="https://www.kaggle.com/settings">settings</a> page, and in API section click on <code>Create New Token</code>. This will download a <code>kaggle.json</code> file.
+Depending on your OS, you will need to place this file in the following directories:</p>
+<ul>
+<li>Windows: <code>C:\Users\&lt;Windows-username&gt;\.kaggle\kaggle.json</code></li>
+<li>Linux, OSX, and other UNIX-based OS: <code>~/.kaggle/kaggle.json</code></li>
+</ul>
+<p>Then, on the terminal, run the following command:</p>
+<p><code>bash
+invoke preprocess-data</code></p>
+<p>This will download the dataset and preprocess it. The number of images to use per class, image size and test size can be modified (TODO: add configuration).</p>
+<h3>Training</h3>
+<p>To train the model, run the following command:</p>
+<p><code>bash
+invoke train</code></p>
+<p>Also, parameters can be set:</p>
+<p><code>bash
+invoke train --lr 0.01 --batch-size 32 --epochs 10</code></p>
+<p>Results will be saved in the <code>reports</code> directory.</p>
+<h3>Evaluation</h3>
+<p>To evaluate the model, run the following command:</p>
+<p><code>bash
+invoke evaluate --model-path &lt;path-to-model&gt;</code></p>
+<h3>Unit testing</h3>
+<p>To run the unit tests, run the following command:</p>
+<p><code>bash
+invoke test</code></p>
+<h3>Good coding practices</h3>
+<h4>Styling</h4>
+<p>We use 'ruff' to enforce code styling. To check the code styling, run the following command:</p>
+<p><code>bash
+ruff check .</code></p>
+<p>Some styling issues can be fixed automatically by running:</p>
+<p><code>bash
+ruff check . --fix</code></p>
+<p>Other issues will need to be fixed manually.</p>
+<p>To format the code, run the following command:</p>
+<p><code>bash
+ruff format .</code></p>
+<h1>Running the Project with Docker</h1>
+<h2>Building the Docker Image</h2>
+<p>To build the Docker image for the project, run the following command:</p>
+<p><code>bash
+docker build --build-arg -f train.dockerfile . -t train:latest</code></p>
+<ul>
+<li>This command will build the Docker image and tag it as <code>train:latest</code>.</li>
+</ul>
+<h2>Running the Docker Container</h2>
+<p>Once the Docker image is built, you can run the container using the following command (for Ubuntu-based systems):</p>
+<p><code>bash
+docker run -it --rm --gpus all train</code></p>
+<h3>Explanation of Flags:</h3>
+<ul>
+<li><code>-it</code>: Runs the container in interactive mode with a terminal.</li>
+<li><code>--rm</code>: Automatically removes the container once it stops.</li>
+<li><code>--gpus all</code>: Enables GPU support for the container (requires NVIDIA drivers and Docker GPU support).</li>
+<li><code>--net=host</code>: Shares the network namespace with the host.</li>
+<li><code>--privileged</code>: Grants the container access to host resources (e.g., GPUs).</li>
+</ul>
+<p>This will just perform the training, exit, and delete the container. If you want to launch a shell inside the container, you can run the following command:</p>
+<p><code>bash
+docker run -it --rm --gpus all train /bin/bash</code></p>
+<p>This will open a shell inside the container, allowing you to interact with it. To train the model, you can run the following command inside the container:</p>
+<p><code>bash
+invoke train</code></p>
+<p>To evaluate the model, you can run the following command:</p>
+<p><code>bash
+invoke evaluate</code></p>
