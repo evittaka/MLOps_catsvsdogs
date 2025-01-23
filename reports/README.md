@@ -641,6 +641,8 @@ Working in the cloud had a learning curve. Initially, we faced challenges with u
 
 Overall, the cloud provided flexibility and scalability, allowing us to experiment with different configurations without hardware limitations. At the beginning we were a bit worried about overspending, but in the end we realised we could have probably used more demanding and thus expensive services, as the costs were quite low for the project.
 
+Additionally, for the continuous integration with GitHub actions, we used far more than the 2.000 compute minutes available (>4.000 minutes) for private repositories. As this is a public repository, there is no limit, which is also why we were not worried about this. However, this might need to be considered in the case of running extensive testing or workflows on private repositories.
+
 
 ### Question 28
 
