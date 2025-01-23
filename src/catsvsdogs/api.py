@@ -5,7 +5,7 @@ import timm
 import torch
 from fastapi import FastAPI, File, UploadFile
 from google.cloud import storage
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from torchvision import transforms
 
 app = FastAPI()
@@ -102,6 +102,8 @@ def predict(data: UploadFile = File(...)):  # noqa: B008
             # two decimal places
             probability = [round(p, 2) for p in probability]
             return {"prediction": prediction, "probability": probability}
+    except UnidentifiedImageError:
+        return {"error": "Cannot identify the uploaded file as a valid image. Please upload a valid image file."}
     except Exception as e:
         raise RuntimeError(f"Failed to make prediction: {str(e)}") from e
 
