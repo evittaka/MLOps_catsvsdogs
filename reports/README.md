@@ -81,7 +81,7 @@ will check the repositories and the code to verify your answers.
 * [x] Add pre-commit hooks to your version control setup (M18)
 * [ ] Add a continues workflow that triggers when data changes (M19)
 * [ ] Add a continues workflow that triggers when changes to the model registry is made (M19)
-* [ ] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
+* [x] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
 * [x] Create a trigger workflow for automatically building your docker images (M21)
 * [x] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [x] Create a FastAPI application that can do inference using your model (M22)
@@ -89,15 +89,15 @@ will check the repositories and the code to verify your answers.
 * [ ] Write API tests for your application and setup continues integration for these (M24)
 * [x] Load test your application (M24)
 * [ ] Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
-* [ ] Create a frontend for your API (M26)
+* [x] Create a frontend for your API (M26)
 
 ### Week 3
 
 * [ ] Check how robust your model is towards data drifting (M27)
 * [ ] Deploy to the cloud a drift detection API (M27)
 * [ ] Instrument your API with a couple of system metrics (M28)
-* [ ] Setup cloud monitoring of your instrumented application (M28)
-* [ ] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
+* [x] Setup cloud monitoring of your instrumented application (M28)
+* [x] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
 * [ ] If applicable, optimize the performance of your data loading using distributed data loading (M29)
 * [ ] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
@@ -350,7 +350,20 @@ Whenever an experiment is run, the exact configuration of all parameters is stor
 >
 > Answer:
 
---- question 14 fill here ---
+As seen in the first image, we tracked **training loss** and **training accuracy**, which are critical metrics for evaluating the performance of our model during the training process.
+
+![Training Statistics](media_images_training_statistics_1_5b7236841ff4dccba265.png)
+
+The training loss shows a downward trend, indicating that the model is learning effectively. However, the fluctuations suggest that further tuning of hyperparameters such as the learning rate may be beneficial. The accuracy graph shows a steep increase early in training and eventually stabilizes around 99%, which suggests the model is fitting well to the training data. Tracking these metrics helps ensure that the model is neither overfitting nor underfitting, and adjustments can be made accordingly to achieve optimal generalization.
+
+The second image provides a **confusion matrix**, which gives deeper insights into the model’s classification performance.
+
+![Confusion Matrix](media_images_confusion_matrix_1_77cc1fe44aae68b96e0e.png)
+
+The confusion matrix indicates that the model correctly classified 957 cat images and 980 dog images, with minimal misclassifications of 55 cats as dogs and 8 dogs as cats. This analysis is valuable for understanding class-specific performance and identifying any biases or recurring patterns in the errors.
+
+Tracking these key metrics is crucial for evaluating model performance, diagnosing potential issues, and guiding improvements in future iterations. By leveraging these insights, we can make data-driven decisions to refine our training pipeline, ensuring robust and reliable model performance in deployment scenarios.
+
 
 ### Question 15
 
@@ -621,7 +634,13 @@ One limitation was that multiple simultaneous requests resulted in running out o
 >
 > Answer:
 
---- question 27 fill here ---
+
+All team members used the same cloud project, sharing the available credits. We spent **$14.66**, with the most expensive service being **Compute Engine**, which cost **$9.73** due to running GPU instances for training. Other significant costs came from **Artifact Registry ($3.50)** and **Vertex AI ($0.89)**, which were used for model storage and training.
+
+Working in the cloud had a learning curve. Initially, we faced challenges with user permissions and accessing different services, which slowed us down. Setting up roles and ensuring the correct permissions for each team member took some time. However, once we resolved these issues, things went smoothly, and deployment became more efficient.
+
+Overall, the cloud provided flexibility and scalability, allowing us to experiment with different configurations without hardware limitations. At the beginning we were a bit worried about overspending, but in the end we realised we could have probably used more demanding and thus expensive services, as the costs were quite low for the project.
+
 
 ### Question 28
 
