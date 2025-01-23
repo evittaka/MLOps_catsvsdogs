@@ -2,11 +2,11 @@ import hydra
 import matplotlib.pyplot as plt
 import seaborn as sns
 import torch
+import wandb
 from loguru import logger
 from omegaconf import DictConfig
 from sklearn.metrics import confusion_matrix
 
-import wandb
 from catsvsdogs.data import catsvsdogs
 from catsvsdogs.model import MobileNetV3
 
