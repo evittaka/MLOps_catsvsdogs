@@ -3,7 +3,7 @@ import os
 
 import timm
 import torch
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from google.cloud import storage
 from PIL import Image, UnidentifiedImageError
 from torchvision import transforms
@@ -86,7 +86,7 @@ def predict(data: UploadFile = File(...)):  # noqa: B008
         dict: A dictionary containing the predicted class label and class probabilities.
     """
     if model is None:
-        return {"error": "Model not loaded. Please check server logs."}
+        raise HTTPException(status_code=500, detail="Model not loaded.")
 
     try:
         # Read the image file
@@ -103,9 +103,9 @@ def predict(data: UploadFile = File(...)):  # noqa: B008
             probability = [round(p, 2) for p in probability]
             return {"prediction": prediction, "probability": probability}
     except UnidentifiedImageError:
-        return {"error": "Cannot identify the uploaded file as a valid image. Please upload a valid image file."}
+        raise HTTPException(status_code=422, detail="Invalid file type. Please upload an image file.") from None
     except Exception as e:
-        raise RuntimeError(f"Failed to make prediction: {str(e)}") from e
+        raise HTTPException(status_code=500, detail=f"Failed to process image: {str(e)}") from e
 
 
 if __name__ == "__main__":

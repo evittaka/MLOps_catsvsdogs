@@ -24,8 +24,34 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements_dev.txt
 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Wait for Cloud Run deployment
+        run: |
+          while true; do
+            status=$(gcloud run services describe mlops-catsvsdogs --region us-central1 --format="value(status)")
+            echo "Cloud Run service status: $status"
+            if echo "$status" | grep -q "Ready"; then
+              echo "Cloud Run service is Ready"
+              break
+            fi
+            sleep 30
+          done
+
+      - name: Get Deployed Model URL
+        id: get-url
+        run: |
+          PROJECT_ID="dtumlops-448016"
+          SERVICE_NAME="mlops-catsvsdogs"
+          REGION="us-central1"
+          URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.url)")
+          echo "DEPLOYED_MODEL_URL=$URL" >> $GITHUB_OUTPUT
+
       - name: Run API tests
         env:
-          DEPLOYED_MODEL_URL: "https://mlops-catsvsdogs-122709719634.us-central1.run.app"
+          DEPLOYED_MODEL_URL: ${{ steps.get-url.outputs.DEPLOYED_MODEL_URL }}
         run: |
           pytest tests/integration_tests/test_apis.py --maxfail=1 --disable-warnings -v
