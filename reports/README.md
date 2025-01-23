@@ -56,48 +56,48 @@ will check the repositories and the code to verify your answers.
 * [x] Add a model to `model.py` and a training procedure to `train.py` and get that running (M6)
 * [x] Remember to fill out the `requirements.txt` and `requirements_dev.txt` file with whatever dependencies that you
     are using (M2+M6)
-* [ ] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
+* [x] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
 * [x] Do a bit of code typing and remember to document essential parts of your code (M7)
 * [ ] Setup version control for your data or part of your data (M8)
 * [ ] Add command line interfaces and project commands to your code where it makes sense (M9)
 * [x] Construct one or multiple docker files for your code (M10)
 * [x] Build the docker files locally and make sure they work as intended (M10)
-* [ ] Write one or multiple configurations files for your experiments (M11)
-* [ ] Used Hydra to load the configurations and manage your hyperparameters (M11)
+* [x] Write one or multiple configurations files for your experiments (M11)
+* [x] Used Hydra to load the configurations and manage your hyperparameters (M11)
 * [ ] Use profiling to optimize your code (M12)
-* [ ] Use logging to log important events in your code (M14)
-* [ ] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
+* [x] Use logging to log important events in your code (M14)
+* [x] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
 * [ ] Consider running a hyperparameter optimization sweep (M14)
-* [ ] Use PyTorch-lightning (if applicable) to reduce the amount of boilerplate in your code (M15)
+* [x] Use PyTorch-lightning (if applicable) to reduce the amount of boilerplate in your code (M15)
 
 ### Week 2
 
-* [ ] Write unit tests related to the data part of your code (M16)
-* [ ] Write unit tests related to model construction and or model training (M16)
-* [ ] Calculate the code coverage (M16)
-* [ ] Get some continuous integration running on the GitHub repository (M17)
-* [ ] Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
-* [ ] Add a linting step to your continuous integration (M17)
-* [ ] Add pre-commit hooks to your version control setup (M18)
+* [x] Write unit tests related to the data part of your code (M16)
+* [x] Write unit tests related to model construction and or model training (M16)
+* [x] Calculate the code coverage (M16)
+* [x] Get some continuous integration running on the GitHub repository (M17)
+* [x] Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
+* [x] Add a linting step to your continuous integration (M17)
+* [x] Add pre-commit hooks to your version control setup (M18)
 * [ ] Add a continues workflow that triggers when data changes (M19)
 * [ ] Add a continues workflow that triggers when changes to the model registry is made (M19)
-* [ ] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
-* [ ] Create a trigger workflow for automatically building your docker images (M21)
-* [ ] Get your model training in GCP using either the Engine or Vertex AI (M21)
-* [ ] Create a FastAPI application that can do inference using your model (M22)
-* [ ] Deploy your model in GCP using either Functions or Run as the backend (M23)
+* [x] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
+* [x] Create a trigger workflow for automatically building your docker images (M21)
+* [x] Get your model training in GCP using either the Engine or Vertex AI (M21)
+* [x] Create a FastAPI application that can do inference using your model (M22)
+* [x] Deploy your model in GCP using either Functions or Run as the backend (M23)
 * [ ] Write API tests for your application and setup continues integration for these (M24)
-* [ ] Load test your application (M24)
+* [x] Load test your application (M24)
 * [ ] Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
-* [ ] Create a frontend for your API (M26)
+* [x] Create a frontend for your API (M26)
 
 ### Week 3
 
 * [ ] Check how robust your model is towards data drifting (M27)
 * [ ] Deploy to the cloud a drift detection API (M27)
 * [ ] Instrument your API with a couple of system metrics (M28)
-* [ ] Setup cloud monitoring of your instrumented application (M28)
-* [ ] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
+* [x] Setup cloud monitoring of your instrumented application (M28)
+* [x] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
 * [ ] If applicable, optimize the performance of your data loading using distributed data loading (M29)
 * [ ] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
@@ -145,6 +145,8 @@ s233671, s233670, s232425, s242577, s180866
 
 We used the third-party framework PyTorch Image Models (TIMM) in our project, as our goal was to classify images, and this framework is well-suited for that purpose. We mainly used the package to load pre-trained models, focusing on the MobileNetV3 model because it is lightweight and suitable for team members without access to a GPU, and to fine-tune it on our dataset. The package allowed us to quickly start with a state-of-the-art model, saving us the time of building it from scratch and achieving better results than training from scratch, thanks to the pretraining.
 
+In the beggining, as we were unsure on what we were going to learn, we selected this lightweight model. Then after learning how to use cloud services, we could have used a more complex model also from TIMM. However, as the results were good, we decided to keep the model as it was, as it was not the main focus of the project.
+
 ## Coding environment
 
 > In the following section we are interested in learning more about you local development environment. This includes
@@ -163,7 +165,7 @@ We used the third-party framework PyTorch Image Models (TIMM) in our project, as
 >
 > Answer:
 
-We use requirements.txt and requirements-dev.txt to manage our dependencies. These files were autogenerated using pipreqs. To set up the environment, new team members should first clone the repository. Then, they need to create a new environment, install pip, and use pip to install all the packages listed in both requirements.txt and requirements-dev.txt. Finally, to obtain the data we're using, they should clone the dataset using DVC (Data Version Control).
+We manage our dependencies using `requirements.txt` and `requirements-dev.txt`, which were autogenerated with `pipreqs`. To set up the environment, new team members should begin by cloning the repository. Next, they should create a new environment and install `pip`. Then, they can use `pip` to install all packages listed in both `requirements.txt` and `requirements-dev.txt`. If the `invoke` package is installed, running the commands `invoke requirements` or `invoke dev-requirements` will also install the necessary dependencies. Finally, to access the data, team members should either clone the dataset using DVC (Data Version Control) or execute `invoke preprocess-data` to download and prepare the data for use.
 
 ### Question 5
 
@@ -179,7 +181,17 @@ We use requirements.txt and requirements-dev.txt to manage our dependencies. The
 >
 > Answer:
 
-From a cookiecutter template we have filled out the requirement.txt files, pyproject.toml, .gitignore, .pre-commit-config.yaml, files in tests directory, also files in src/catsvsdogs directory, reports directory, saved the model in models directory, saved the logs in logs directory, moreover filled dockerfiles and data directories. Also, filled dependency files in dependency folder. So, overall we use all the best from coockiecutter template. We didn't remove anything.
+We started with a Cookiecutter template and customized it for our project. Here's a breakdown of the adjustments:
+
+- **Dependencies:** We populated the `requirements.txt` and `pyproject.toml` files with the necessary dependencies.
+- **Configuration files:** We updated `.gitignore`, `.pre-commit-config.yaml`, and other configuration files to fit the project needs.
+- **Project structure:**
+  - The `tests` and `src/catsvsdogs` directories were filled with the relevant code and tests.
+  - We stored the trained models in the `models` directory and the logs in the `logs` directory.
+  - Dependency files were placed in the `dependency` folder.
+  - The `dockerfiles` and `data` directories were also filled accordingly.
+
+We removed the `notebooks` folder as we did not use any notebooks in this project. For specific utilities, we included the `wandb` folder for Weights & Biases and folders for outputs from Hydra.
 
 ### Question 6
 
@@ -194,9 +206,9 @@ From a cookiecutter template we have filled out the requirement.txt files, pypro
 >
 > Answer:
 
-Yes, we used Ruff to maintain good code styling. We implemented a two-step check process. First, as described in the README.md file, we ensure that all Ruff checks pass before pushing code to GitHub. Second, we set up automatic GitHub checks that verify the pushed code adheres to the Ruff requirements.
+At first, we used Ruff to maintain good code styling. We implemented a two-step check process. First, as described in the README.md file, we ensure that all Ruff checks pass before pushing code to GitHub. Second, we set up automatic GitHub checks that verify the pushed code adheres to the Ruff requirements. We also used pre-commit. However, as there were some inconsistencies between the code formatters when running locally and on GitHub, we decided to use [pre-commit ci](https://pre-commit.ci/), which is a bot that automatically fixes the code formatting and pushes the changes back to the repository.
 
-In larger projects, maintaining tidy and consistent code is crucial. Since many people may work on the same codebase, having a unified coding style makes the code easier to read and understand. Without a consistent style, the code can become messy and difficult to navigate. Additionally, tidy code helps new team members quickly understand the structure and get up to speed.
+In larger projects, having a tidy and consistent code is very important. Since many people may work on the same code, having a unified coding style makes the code easier to read and understand. Without a consistent style, the code can become messy and difficult to understand. Additionally, tidy code can help new team members quickly understand the structure.
 
 ## Version control
 
@@ -245,7 +257,7 @@ In larger projects, maintaining tidy and consistent code is crucial. Since many 
 >
 > Answer:
 
-Yes, we employed branches and pull requests as part of our workflow. Initially, we experienced a major issue when a direct push to the main branch resulted in the repository being completely disrupted. This taught us the importance of using branches and pull requests for maintaining stability. We had to use git reset --hard to recover the repository, which was a valuable but time-consuming lesson.
+Yes, we used branches and pull requests as part of our workflow. Initially, we experienced a major issue when a direct push to the main branch with big files resulted in the repository being completely disrupted. This taught us the importance of using branches and pull requests for maintaining stability. We had to use tools like git-filter-repo to completely remove the large files from the repository, which was a time-consuming process due to our inexperience.
 
 To prevent such incidents in the future, we set up the repository to only allow pull requests to the main branch. Additionally, we enforced a rule to prevent anyone from approving their own pull requests, ensuring peer review before merging. Each team member worked on their respective feature branches and submitted pull requests once their code was ready. This process allowed us to catch bugs, maintain code quality, and ensure that new changes integrated smoothly without impacting the main branch.
 
@@ -283,7 +295,9 @@ In the end, it helped us in tracking scenarios where our processed data would ch
 >
 > Answer:
 
---- question 11 fill here ---
+Our project includes continuous integration (CI) workflows to ensure code consistency across different platforms. We run unit tests on Windows, Ubuntu, and MacOS to verify functionality on various operating systems. While these tests are not required for merging PRs, we try to ensure they pass. To optimize test performance, we added caching for shared dependencies, which significantly reduced runtime.
+
+For code formatting, we initially set up a workflow to run `ruff check .` and `ruff format .` without making changes to the code. Later, we added a pre-commit workflow to automatically fix formatting issues. However, as mentioned before, inconsistencies appeared between local formatting and GitHub results, even when using identical versions. To resolve this, we integrated [pre-commit.ci](https://pre-commit.ci/), a bot that fixes formatting issues and pushes updates directly to the repository. A sample commit from the pre-commit bot is available [here](https://github.com/DevJav/MLOps_catsvsdogs/pull/39/commits/b97ded1a16a1d4d31e08c5c228341f098b714f2d).
 
 ## Running code and tracking experiments
 
@@ -336,7 +350,20 @@ Whenever an experiment is run, the exact configuration of all parameters is stor
 >
 > Answer:
 
---- question 14 fill here ---
+As seen in the first image, we tracked **training loss** and **training accuracy**, which are critical metrics for evaluating the performance of our model during the training process.
+
+![Training Statistics](media_images_training_statistics_1_5b7236841ff4dccba265.png)
+
+The training loss shows a downward trend, indicating that the model is learning effectively. However, the fluctuations suggest that further tuning of hyperparameters such as the learning rate may be beneficial. The accuracy graph shows a steep increase early in training and eventually stabilizes around 99%, which suggests the model is fitting well to the training data. Tracking these metrics helps ensure that the model is neither overfitting nor underfitting, and adjustments can be made accordingly to achieve optimal generalization.
+
+The second image provides a **confusion matrix**, which gives deeper insights into the model’s classification performance.
+
+![Confusion Matrix](media_images_confusion_matrix_1_77cc1fe44aae68b96e0e.png)
+
+The confusion matrix indicates that the model correctly classified 957 cat images and 980 dog images, with minimal misclassifications of 55 cats as dogs and 8 dogs as cats. This analysis is valuable for understanding class-specific performance and identifying any biases or recurring patterns in the errors.
+
+Tracking these key metrics is crucial for evaluating model performance, diagnosing potential issues, and guiding improvements in future iterations. By leveraging these insights, we can make data-driven decisions to refine our training pipeline, ensuring robust and reliable model performance in deployment scenarios.
+
 
 ### Question 15
 
@@ -351,7 +378,22 @@ Whenever an experiment is run, the exact configuration of all parameters is stor
 >
 > Answer:
 
---- question 15 fill here ---
+Yes, we created a Dockerfile for training, leveraging data stored in our Google Cloud Bucket. The Dockerfile is available at: [europe-west1-docker.pkg.dev/dtumlops-448016/mlops-50-docker/mlops-app-cloud](europe-west1-docker.pkg.dev/dtumlops-448016/mlops-50-docker/mlops-app-cloud).
+
+To run the training image, we used the following commands. This will build the image and run the training pipeline:
+
+```bash
+docker build -f train.dockerfile . -t train:latest
+docker run -it --rm --gpus all train
+```
+
+Additionally, interactive mode was possible using:
+
+```bash
+docker run -it --rm --gpus all train /bin/bash
+```
+
+TODO: ADD API AND FRONTEND DOCKERFILE
 
 ### Question 16
 
@@ -420,6 +462,7 @@ gcloud compute instances create mlops-t4-gpu \
     --maintenance-policy=TERMINATE \
     --metadata="install-nvidia-driver=True"
 ```
+
 Although lag was significant while working on this instance, we managed to run our experiments and training pipelines successfully. Additionally, we used **Docker images** to containerize our training environment. These images were built using **Cloud Build**, with triggers linked to our GitHub repository to ensure that changes in the codebase were automatically reflected in the containerized environment. This approach allowed us to maintain consistency between our local and cloud environments, facilitating reproducibility and scalability across different stages of the project.
 
 
@@ -468,7 +511,20 @@ Although lag was significant while working on this instance, we managed to run o
 >
 > Answer:
 
---- question 22 fill here ---
+Yes, we managed to train our model in the cloud using **Vertex AI**. We executed the training job using the following command:
+
+```bash
+gcloud ai custom-jobs create \
+    --region=europe-west2 \
+    --display-name=test-run \
+    --config=config.yaml
+```
+
+The training process took almost 5 hours to complete due to the fact that we utilized only a CPU instance, as GPU-backed Vertex AI instances encountered persistent configuration errors. Despite this limitation, the managed infrastructure provided by Vertex AI ensured a seamless execution of the training pipeline.
+
+Once the training was completed, the trained model was automatically uploaded to Google Cloud Buckets for storage and to Weights & Biases (W&B) as an artifact for experiment tracking and reproducibility. This setup allowed us to efficiently manage and retrieve the trained model for further evaluation and deployment.
+
+
 
 ## Deployment
 
@@ -485,7 +541,9 @@ Although lag was significant while working on this instance, we managed to run o
 >
 > Answer:
 
---- question 23 fill here ---
+We managed to write an API for our model using FastAPI. Since the goal of our model is to identify whether a provided image is of a cat or a dog, we implemented an endpoint to handle these requests. We started with the code from module M22, which explains similar functionality, and adapted it to load our latest model.
+
+We created the `/predict` endpoint, which accepts a POST request with a file and returns the model's prediction. The response also includes additional information, such as the probability of the prediction and the class names. Thanks to uvicorn, the `/docs` endpoint is available, making it simple to upload an image and test the API interactively.
 
 ### Question 24
 
@@ -501,7 +559,19 @@ Although lag was significant while working on this instance, we managed to run o
 >
 > Answer:
 
---- question 24 fill here ---
+To deploy our API, we initially tried using a Cloud Run function, which worked. However, this approach had some downsides: there was no version control, and any modifications required accessing Google Cloud through the web interface. To address these issues, we decided to adapt the `api.py` file from the template to create the API and then modified the `api.dockerfile` to build a container.
+
+We successfully deployed the container to Google Cloud Run, configuring it to automatically build the image each time we push to the main branch. This solution is much better as it incorporates version control and automates the build process.
+
+A request can be made like this:
+
+```bash
+ curl -X 'POST' \
+  'https://mlops-catsvsdogs-122709719634.us-central1.run.app/predict' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'data=@{image}.jpg;type=image/jpg'
+```
 
 ### Question 25
 
@@ -516,7 +586,21 @@ Although lag was significant while working on this instance, we managed to run o
 >
 > Answer:
 
---- question 25 fill here ---
+# TODO: add unit testing
+
+Below are the results of the load testing we performed on our API deployed on Google Cloud Run:
+
+| **Metric**             | **Value**                |
+|-------------------------|--------------------------|
+| **Request Count**       | 562                      |
+| **Median Response Time**| 820 ms                   |
+| **Average Response Time**| 3593.86 ms              |
+| **Min Response Time**   | 73.58 ms                 |
+| **Max Response Time**   | 22910 ms (~23 seconds)   |
+
+We used Locust to perform the load testing, simulating 50 users with a hatch rate of 10 users per second. The results showed that the API could handle a moderate load, with a median response time of 820 ms and an average response time of 3593.86 ms. However, this last metric was skewed by a few requests that took up to 23 seconds to complete.
+
+One limitation was that multiple simultaneous requests resulted in running out of the limited memory that the Cloud Run had available, causing the service to crash and restart.
 
 ### Question 26
 
@@ -550,7 +634,13 @@ Although lag was significant while working on this instance, we managed to run o
 >
 > Answer:
 
---- question 27 fill here ---
+
+All team members used the same cloud project, sharing the available credits. We spent **$14.66**, with the most expensive service being **Compute Engine**, which cost **$9.73** due to running GPU instances for training. Other significant costs came from **Artifact Registry ($3.50)** and **Vertex AI ($0.89)**, which were used for model storage and training.
+
+Working in the cloud had a learning curve. Initially, we faced challenges with user permissions and accessing different services, which slowed us down. Setting up roles and ensuring the correct permissions for each team member took some time. However, once we resolved these issues, things went smoothly, and deployment became more efficient.
+
+Overall, the cloud provided flexibility and scalability, allowing us to experiment with different configurations without hardware limitations. At the beginning we were a bit worried about overspending, but in the end we realised we could have probably used more demanding and thus expensive services, as the costs were quite low for the project.
+
 
 ### Question 28
 
@@ -615,4 +705,4 @@ Although lag was significant while working on this instance, we managed to run o
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
---- question 31 fill here ---
+Student s233671 was responsible for creating the baseline model and later integrating the MobileNetV3 model from TIMM. Additionally, they ensured a smooth workflow with Git by maintaining good practices and adding formatting workflows. They also implemented logging with Weights and Biases, created the API, and deployed it to the cloud.
