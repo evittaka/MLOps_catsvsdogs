@@ -100,8 +100,16 @@ async def predict(data: UploadFile = File(...)):  # noqa: B008
         return {"error": "Model not loaded. Please check server logs."}
 
     try:
-        # Read the image file
-        image = Image.open(io.BytesIO(data.file.read()))
+        # Read the image file asynchronously
+        file_bytes = await data.read()
+        try:
+            # Attempt to open the image
+            image = Image.open(io.BytesIO(file_bytes))
+        except Exception as e:
+            ERROR_COUNT.inc()
+            return {"error": f"Invalid image file: {str(e)}"}
+
+        # Preprocess the image
         image = transform(image).unsqueeze(0).to(DEVICE)
 
         # Make the prediction
@@ -109,13 +117,18 @@ async def predict(data: UploadFile = File(...)):  # noqa: B008
             output = model(image)
             _, predicted = torch.max(output, 1)
             prediction = "cat" if predicted.item() == 0 else "dog"
-            probability = torch.nn.functional.softmax(output, dim=1).tolist()[0]
-            # two decimal places
-            probability = [round(p, 2) for p in probability]
-            return {"prediction": prediction, "probability": probability}
+            probabilities = torch.nn.functional.softmax(output, dim=1).tolist()[0]
+            probabilities = [round(p, 2) for p in probabilities]  # Round to 2 decimals
+
+        return {"prediction": prediction, "probabilities": probabilities}
+
     except Exception as e:
-        ERROR_COUNT.inc()  # Increment error count
-        raise RuntimeError(f"Failed to make prediction: {str(e)}") from e
+        ERROR_COUNT.inc()
+        # Log the error for debugging purposes
+        import logging
+
+        logging.error(f"Failed to make prediction: {str(e)}", exc_info=True)
+        return {"error": "An internal error occurred. Please try again later."}
 
 
 if __name__ == "__main__":
