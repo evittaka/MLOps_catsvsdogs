@@ -1,4 +1,4 @@
-name: API Test
+name: API Tests
 
 on:
   push:
@@ -6,9 +6,8 @@ on:
       - 'main'
 
 jobs:
-  api-test:
+  deploy-and-test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -16,19 +15,53 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          cache: pip
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: setup.py
 
-      - name: Install dependencies
+      - run: |
+          python -m pip install -U pip setuptools wheel
+          pip install pytest requests
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Wait for Cloud Run deployment
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements_dev.txt
+          while true; do
+            status=$(gcloud run services describe mlops-catsvsdogs --region us-central1 --format="value(status)")
+            echo "Cloud Run service status: $status"
+            if echo "$status" | grep -q "Ready"; then
+              echo "Cloud Run service is Ready"
+              break
+            fi
+            sleep 30
+          done
 
-      - name: Run API tests
+      - name: Get Deployed Model URL
+        id: get-url
         run: |
-          pytest tests/integration_tests/test_apis.py --maxfail=1 --disable-warnings --junit-xml=pytest-results.xml -v
+          PROJECT_ID="dtumlops-448016"
+          SERVICE_NAME="mlops-catsvsdogs"
+          REGION="us-central1"
+          URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.url)")
+          echo "DEPLOYED_MODEL_URL=$URL" >> $GITHUB_OUTPUT
 
-      - name: Upload pytest results
+      - name: Setup test files
+        run: |
+          mkdir -p tests/integration_tests
+          curl https://placekitten.com/224/224 -o tests/integration_tests/cat.jpg
+
+      - name: Run tests
+        env:
+          DEPLOYED_MODEL_URL: ${{ steps.get-url.outputs.DEPLOYED_MODEL_URL }}
+        run: |
+          pytest tests/integration_tests/test_apis.py -v --junitxml=test-results.xml
+
+      - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
-          name: pytest-results
-          path: pytest-results.xml
+          name: test-results
+          path: test-results.xml
