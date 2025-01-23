@@ -227,7 +227,7 @@ In larger projects, having a tidy and consistent code is very important. Since m
 >
 > Answer:
 
---- question 7 fill here ---
+We implemented three test-files with four different test functions. Two of the tests are parameterised which tests a wide array of parameters, and most test functions include multiple assert statements. In total 16 tests are run. We are primarely testing the model pipeline, which includes checks if data is of the correct type, and that the model input and outputs are the correct shape, size and type. In order to run the unittests on github, we check if the data path exists, and if not, we skip the data tests. Most often the unittests on github therefore contain 15 tests and 1 skipped.
 
 ### Question 8
 
@@ -242,7 +242,31 @@ In larger projects, having a tidy and consistent code is very important. Since m
 >
 > Answer:
 
---- question 8 fill here ---
+The code coverage is rapported with each unittest on github actions, and is at 37% on the data.py, model.py and train.py. This is far from extensive, and could be expanded. However we focused mainly on the model, as this is the core part of the code, and has a coverage of 65%. We would like to test a larger part of the code, but even if we reached 100% coverage, we would not be certain of having no errors. We would rather test the core funtionalities that are nessecary for a successfull run, which is the pipeline from data input to estimation.
+
+An example of the test and coverage output is seen here:
+```
+============================= test session starts ==============================
+platform darwin -- Python 3.12.8, pytest-7.4.3, pluggy-1.5.0
+rootdir: /Users/runner/work/MLOps_catsvsdogs/MLOps_catsvsdogs
+plugins: hydra-core-1.3.2
+collected 16 items
+
+tests/test_data.py s                                                     [  6%]
+tests/test_model.py ........                                             [ 56%]
+tests/test_train.py .......                                              [100%]
+
+======================== 15 passed, 1 skipped in 29.38s ========================
+Name                         Stmts   Miss  Cover   Missing
+----------------------------------------------------------
+src/catsvsdogs/__init__.py       0      0   100%
+src/catsvsdogs/data.py          85     61    28%   22, 27-77, 81-82, 86-94, 99-103, 111-119, 124-127, 131
+src/catsvsdogs/model.py         40     14    65%   31-39, 42, 45, 50-53, 57
+src/catsvsdogs/train.py         61     42    31%   29-49, 55-101, 105
+----------------------------------------------------------
+TOTAL                          186    117    37%
+```
+
 
 ### Question 9
 
@@ -656,7 +680,7 @@ Overall, the cloud provided flexibility and scalability, allowing us to experime
 >
 > Answer:
 
---- question 28 fill here ---
+We implemented a frontend based on streamlit for the prediction API. We believe it wraps the project very nicely, as the frontend of this type of model closely resembles how a user would use it in the real world. The frontend is part of the continuous development, and is deployed on Cloud Run when a pull request is merged into main. This makes the usage of the model very straight-forward, and additional functionality would be easy to implement. The frontend with a prediction of a picture not in the training set can be seen here [this figure](figures/frontend.png)
 
 ### Question 29
 
