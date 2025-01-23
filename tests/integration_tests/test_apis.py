@@ -5,6 +5,11 @@ import requests
 
 # Use the fixed deployed API URL
 DEPLOYED_MODEL_URL = os.getenv("DEPLOYED_MODEL_URL")
+if DEPLOYED_MODEL_URL is None:
+    DEPLOYED_MODEL_URL = "https://mlops-catsvsdogs-122709719634.us-central1.run.app"
+    print(f"DEPLOYED_MODEL_URL not set, using default: {DEPLOYED_MODEL_URL}")
+else:
+    print(f"DEPLOYED_MODEL_URL: {DEPLOYED_MODEL_URL}")
 
 
 def test_predict_valid_image():
