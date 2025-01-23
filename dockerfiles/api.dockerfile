@@ -1,17 +1,30 @@
-# Change from latest to a specific version if your requirements.txt
-FROM python:3.11-slim AS base
+FROM python:3.11-slim
 
-RUN apt update && \
-    apt install --no-install-recommends -y build-essential gcc && \
-    apt clean && rm -rf /var/lib/apt/lists/*
+EXPOSE 8080
 
-COPY src src/
-COPY requirements.txt requirements.txt
-COPY requirements_dev.txt requirements_dev.txt
-COPY README.md README.md
-COPY pyproject.toml pyproject.toml
+WORKDIR /app
 
-RUN pip install -r requirements.txt --no-cache-dir --verbose
-RUN pip install . --no-deps --no-cache-dir --verbose
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    software-properties-common \
+    libjpeg-dev \
+    zlib1g-dev \
+    libgl1-mesa-glx \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["uvicorn", "src/catsvsdogs/api:app", "--host", "0.0.0.0", "--port", "8000"]
+# Install Python dependencies
+RUN pip install --no-cache-dir \
+    torch torchvision timm \
+    fastapi \
+    pillow \
+    google-cloud-storage \
+    uvicorn \
+    python-multipart
+
+RUN git clone https://github.com/evittaka/MLOps_catsvsdogs.git /workspace/MLOps_catsvsdogs
+
+# Move MLOps_catsvsdogs/src/catsvsdogs/api.py to /app
+RUN cp /workspace/MLOps_catsvsdogs/src/catsvsdogs/api.py /app
+
+CMD exec uvicorn api:app --port 8080 --host 0.0.0.0 --workers 1
