@@ -617,8 +617,7 @@ A request can be made like this:
 > *before the service crashed.*
 >
 > Answer:
-
-# TODO: add unit testing
+We implemented three pytest API unit tests to validate the deployed model's functionality, covering scenarios like submitting a valid image, an invalid file, and no file. These tests ensured the /predict endpoint handled edge cases effectively. All tests passed, verifying correct HTTP status codes and response content, showcasing the API's reliability and robustness.
 
 Below are the results of the load testing we performed on our API deployed on Google Cloud Run:
 
