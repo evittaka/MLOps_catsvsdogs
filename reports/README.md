@@ -702,7 +702,11 @@ We implemented a frontend based on streamlit for the prediction API. We believe 
 >
 > Answer:
 
---- question 29 fill here ---
+![my_image](figures/diagram.jpg)
+
+As a developer, the starting point of the diagram is our local setup. VSCode is used for coding, and Git is used for version control. For the neural network, we implemented frameworks like TIMM and PyTorch Lightning. After a new feature was made in a new branch, a Pull Request had to be created (as pushing to the main branch was blocked). The CI workflow we implemented ran tests and bots to perform different checks, as explained in previous questions. Once approved and merged, the triggers for Cloud Build would activate, resulting in the creation of three images. The main Docker trained the model, saved it into the bucket, and marked it as the latest. Another Docker image served as the API for making predictions with the latest model built by the previously mentioned Docker. Finally, a front-end image provided easier access to the API. It is also worth mentioning that in both local training and cloud training, we used Hydra to configure and log the different parameters to make experiments reproducible. We also used Weights & Biases to log the various experiments and results, as well as the artifact models.
+
+As an end-user, they will have the possibility to interact with the model via the API, without worrying about training or other technical details. They can easily upload an image using the frontend. Alternatively, they could pull the source code from GitHub, use the invoke commands to set everything up, and train the model themselves, or pull the latest Docker image from Google Cloud, offering a fast and easy way to use the model.
 
 ### Question 30
 
