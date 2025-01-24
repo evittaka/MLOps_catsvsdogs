@@ -459,6 +459,8 @@ We used the following GCP services in our project:
 
 - **Google Cloud Buckets:** Used for storing our datasets and processed data. The buckets served as a remote storage solution, ensuring easy accessibility and integration with our version control system, DVC.
 
+- **Cloud Run Function:** Used to implement and run a deployment function on the cloud.
+
 - **VM Instances (Compute Engine):** Utilized for running experiments and training our models in the cloud. These virtual machines provided the computational resources needed for efficient execution of our workloads.
 
 - **Cloud Build:** Employed to build Docker images automatically. We set up triggers linked to our GitHub repository so that whenever changes were pushed, the Docker images were rebuilt and deployed. This streamlined our workflow and ensured that the latest code was always reflected in the containerized environment.
