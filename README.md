@@ -1,7 +1,7 @@
 ![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/tests.yaml/badge.svg)
 ![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/api-tests.yaml/badge.svg)
 ![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/locust.yaml/badge.svg)
-  
+
 # Project Cats vs. Dogs
 
 ---
@@ -10,7 +10,7 @@
 
 Our model takes in an image and predicts whether its a picture of a dog or a cat. In order to use the model, it is hosted on Google Cloud, and can be accessed different ways
 
-To use the project, the following links are available 
+To use the project, the following links are available
 - Clone the GitHub repository with ```git clone https://github.com/evittaka/MLOps_catsvsdogs.git```
 - Download the dockerfiles from Google Cloud
 - Use the API: [API link](https://mlops-catsvsdogs-122709719634.us-central1.run.app/docs)
