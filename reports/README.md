@@ -756,4 +756,4 @@ Student s242577 integrated the Loguru library for efficient logging and automati
 
 Student s180866 was responsible for the unittests and setup caching for unittests to ensure faster CI process. Setup the code that checks if you have the data in your local repository, otherwise downloads it from Kaggle. They setup the frontend, utilising the API, and deployed it to the cloud.
 
-For the project we used AI tools, such as ChatGPT and Gemini on the Google Cloud to help write dome of our code and for dubbuging purposes. Additionally, the AI tools were used to clarify lectures material and get deeper understanding.
+For the project, we used AI tools such as ChatGPT, GitHub Copilot and Gemini on Google Cloud to help write some of our code and assist with debugging. Additionally, the AI tools were used to clarify lecture material and deepen our understanding.
