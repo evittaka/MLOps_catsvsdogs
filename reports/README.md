@@ -618,9 +618,9 @@ A request can be made like this:
 >
 > Answer:
 
-We implemented three pytest API unit tests to validate the deployed model's functionality, covering scenarios like submitting a valid image, an invalid file, and no file. These tests ensured the /predict endpoint handled edge cases effectively. All tests passed, verifying correct HTTP status codes and response content, showcasing the API's reliability and robustness.
+We implemented three pytest API unit tests to validate the deployed model's functionality, covering scenarios like submitting a valid image, an invalid file, and no file. These tests ensured the /predict endpoint handled edge cases effectively. All tests passed, verifying correct HTTP status codes and response content.
 
-Below are the results of the load testing we performed on our API deployed on Google Cloud Run:
+Results of the load testing of API:
 
 | **Metric**             | **Value**                |
 |-------------------------|--------------------------|
@@ -632,7 +632,7 @@ Below are the results of the load testing we performed on our API deployed on Go
 
 We used Locust to perform the load testing, simulating 50 users with a hatch rate of 10 users per second. The results showed that the API could handle a moderate load, with a median response time of 820 ms and an average response time of 3593.86 ms. However, this last metric was skewed by a few requests that took up to 23 seconds to complete.
 
-One limitation was that multiple simultaneous requests resulted in running out of the limited memory that the Cloud Run had available, causing the service to crash and restart.
+One limitation: Simultaneous requests exceeded Cloud Run's memory, causing crashes and restarts.
 
 ### Question 26
 
