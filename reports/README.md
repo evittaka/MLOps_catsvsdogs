@@ -106,10 +106,10 @@ will check the repositories and the code to verify your answers.
 
 * [ ] Write some documentation for your application (M32)
 * [ ] Publish the documentation to GitHub Pages (M32)
-* [ ] Revisit your initial project description. Did the project turn out as you wanted?
-* [ ] Create an architectural diagram over your MLOps pipeline
-* [ ] Make sure all group members have an understanding about all parts of the project
-* [ ] Uploaded all your code to GitHub
+* [x] Revisit your initial project description. Did the project turn out as you wanted?
+* [x] Create an architectural diagram over your MLOps pipeline
+* [x] Make sure all group members have an understanding about all parts of the project
+* [x] Uploaded all your code to GitHub
 
 ## Group information
 
@@ -380,13 +380,13 @@ Whenever an experiment is run, the exact configuration of all parameters is stor
 
 As seen in the first image, we tracked **training loss** and **training accuracy**, which are critical metrics for evaluating the performance of our model during the training process.
 
-![Training Statistics](media_images_training_statistics_1_5b7236841ff4dccba265.png)
+![Training Statistics](figures/media_images_training_statistics_1_5b7236841ff4dccba265.png)
 
 The training loss shows a downward trend, indicating that the model is learning effectively. However, the fluctuations suggest that further tuning of hyperparameters such as the learning rate may be beneficial. The accuracy graph shows a steep increase early in training and eventually stabilizes around 99%, which suggests the model is fitting well to the training data. Tracking these metrics helps ensure that the model is neither overfitting nor underfitting, and adjustments can be made accordingly to achieve optimal generalization.
 
 The second image provides a **confusion matrix**, which gives deeper insights into the model’s classification performance.
 
-![Confusion Matrix](media_images_confusion_matrix_1_77cc1fe44aae68b96e0e.png)
+![Confusion Matrix](figures/media_images_confusion_matrix_1_77cc1fe44aae68b96e0e.png)
 
 The confusion matrix indicates that the model correctly classified 957 cat images and 980 dog images, with minimal misclassifications of 55 cats as dogs and 8 dogs as cats. This analysis is valuable for understanding class-specific performance and identifying any biases or recurring patterns in the errors.
 
@@ -749,6 +749,8 @@ What made this process much more managable was the integration with GitHub Actio
 Student s233671 was responsible for creating the baseline model and later integrating the MobileNetV3 model from TIMM. Additionally, they ensured a smooth workflow with Git by maintaining good practices and adding formatting workflows. They also implemented logging with Weights and Biases, created the API, and deployed it to the cloud.
 
 Student s232425 was in charge of setting up the initial cookie cutter template and creating GitHub repository. Additionally, she updated the model training setup, so it would be ran on pytorch-lightning application, making model training code less cluttered. Also, she implemented model deployment function on the google cloud.
+
+Student s233670 was responsible for enabling the use of Hydra for configuration management, developing the training dockerfile, setting up the project in Google Cloud, creating triggers to update the Docker image when the GitHub repository received any push to main, setting up data and model buckets in Google Cloud, and training the model using Vertex AI.
 
 Student s242577 integrated the Loguru library for efficient logging and automatic log file creation and wrote test models to validate various cloud-based API functionalities. She also ensured a smooth Git workflow by implementing best practices and formatting workflows, enhancing collaboration and code quality.
 
