@@ -11,8 +11,15 @@
 Our model takes in an image and predicts whether its a picture of a dog or a cat. In order to use the model, it is hosted on Google Cloud, and can be accessed different ways
 
 To use the project, the following links are available
-- Clone the GitHub repository with ```git clone https://github.com/evittaka/MLOps_catsvsdogs.git```
-- Download the dockerfiles from Google Cloud
+- Clone the GitHub repository with
+
+```bash
+git clone https://github.com/evittaka/MLOps_catsvsdogs.git
+```
+- Download the training dockerfile from Google Cloud
+```bash
+docker pull europe-west1-docker.pkg.dev/dtumlops-448016/mlops-50-docker/mlops-app-cloud
+```
 - Use the API: [API link](https://mlops-catsvsdogs-122709719634.us-central1.run.app/docs)
 - Easy to use webpage: [Link to frontend](https://mlops-catsvsdogs-frontend-122709719634.us-central1.run.app)
 
@@ -85,19 +92,13 @@ pre-commit install
 
 The dataset is available on Kaggle at the following link: [Cats-vs-Dogs](https://www.kaggle.com/datasets/shaunthesheep/microsoft-catsvsdogs-dataset).
 
-To download it, first you need a Kaggle token. To this go to your [settings](https://www.kaggle.com/settings) page, and in API section click on `Create New Token`. This will download a `kaggle.json` file.
-Depending on your OS, you will need to place this file in the following directories:
-
-- Windows: `C:\Users\<Windows-username>\.kaggle\kaggle.json`
-- Linux, OSX, and other UNIX-based OS: `~/.kaggle/kaggle.json`
-
-Then, on the terminal, run the following command:
+To download the dataset without creating a Kaggle account, run the following command:
 
 ```bash
 invoke preprocess-data
 ```
 
-This will download the dataset and preprocess it. The number of images to use per class, image size and test size can be modified (TODO: add configuration).
+This will download the dataset and preprocess it. The number of images to use per class, image size and test size can be modified in the configuration files found in the config folder. The processed data will be saved in the data/process folder, and will consist of a train and test .pt files.
 
 ### Training
 
@@ -107,11 +108,7 @@ To train the model, run the following command:
 invoke train
 ```
 
-Also, parameters can be set:
-
-```bash
-invoke train --lr 0.01 --batch-size 32 --epochs 10
-```
+Also, parameters can be set by modifying the configuration files found in the config folder.
 
 Results will be saved in the `reports` directory.
 
@@ -174,6 +171,12 @@ docker build --build-arg -f train.dockerfile . -t train:latest
 ```
 
 - This command will build the Docker image and tag it as `train:latest`.
+
+Additionally, you can download the image from Google Cloud with the following command:
+
+```bash
+docker pull europe-west1-docker.pkg.dev/dtumlops-448016/mlops-50-docker/mlops-app-cloud
+```
 
 ### Running the Docker Container
 
