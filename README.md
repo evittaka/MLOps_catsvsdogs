@@ -1,6 +1,29 @@
-# Project description
+![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/tests.yaml/badge.svg)
+![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/api-tests.yaml/badge.svg)
+![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/locust.yaml/badge.svg)
+  
+# Project Cats vs. Dogs
 
 ---
+
+## Access
+
+Our model takes in an image and predicts whether its a picture of a dog or a cat. In order to use the model, it is hosted on Google Cloud, and can be accessed different ways
+
+To use the project, the following links are available 
+- Clone the GitHub repository with ```git clone https://github.com/evittaka/MLOps_catsvsdogs.git```
+- Download the dockerfiles from Google Cloud
+- Use the API: [API link](https://mlops-catsvsdogs-122709719634.us-central1.run.app/docs)
+- Easy to use webpage: [Link to frontend](https://mlops-catsvsdogs-frontend-122709719634.us-central1.run.app)
+
+## Project overview
+
+The structure of the project is seen in the flowchart below. This gives an idea of the flow and interdependencies of the project, as well as the accespoints mentioned before.
+![my_image](reports/figures/diagram.jpg)
+
+---
+
+# Project description
 
 ## Goal
 
@@ -18,11 +41,12 @@ The dataset selected for this project is the Cats vs Dogs dataset from Kaggle. T
 
 Our task is to perform binary image classification on the Cats vs Dogs dataset. Initially, we will develop a baseline CNN model to establish a point of reference. Subsequently, we will explore and compare the performance of advanced models available in the TIMM framework, including ConvNeXt, MobileNet V3, ResNet, and VGG. This comparison will help us understand the strengths and trade-offs of each model in terms of accuracy, computational efficiency, and scalability.
 
----
 
-## Instructions
+# Developer Instructions
 
-### Setup
+For the people developing the project, here are some instructions to get started.
+
+## Setup
 
 1. Clone the repository
 
@@ -57,7 +81,7 @@ invoke dev-requirements
 pre-commit install
 ```
 
-### Data
+## Data
 
 The dataset is available on Kaggle at the following link: [Cats-vs-Dogs](https://www.kaggle.com/datasets/shaunthesheep/microsoft-catsvsdogs-dataset).
 
@@ -91,7 +115,7 @@ invoke train --lr 0.01 --batch-size 32 --epochs 10
 
 Results will be saved in the `reports` directory.
 
-### Evaluation
+## Evaluation
 
 To evaluate the model, run the following command:
 
@@ -99,7 +123,7 @@ To evaluate the model, run the following command:
 invoke evaluate --model-path <path-to-model>
 ```
 
-### Unit testing
+## Unit testing
 
 To run the unit tests, run the following command:
 
@@ -107,9 +131,9 @@ To run the unit tests, run the following command:
 invoke test
 ```
 
-### Good coding practices
+## Good coding practices
 
-#### Styling
+### Styling
 
 We use 'ruff' to enforce code styling. To check the code styling, run the following command:
 
@@ -130,9 +154,18 @@ To format the code, run the following command:
 ```bash
 ruff format .
 ```
-# Running the Project with Docker
 
-## Building the Docker Image
+## Integrating your changes
+
+The main branch is a protected branch. In order to integrate your changes, you will need to develop on a separate branch, and create a pull request for your branch. GitHub Actions will then run the unittests, integration tests and check formating. Another member of the team will then need to accept your changes and give a review of the changes made. After this has occured, the branch can be merged with main.
+
+### When changes are merged to main
+
+When a change to the main branch has occured, a new build will be made on Google Cloud. If this succeeds, a full checkmark will be available for the main branch.
+
+## Running the Project with Docker
+
+### Building the Docker Image
 
 To build the Docker image for the project, run the following command:
 
@@ -142,7 +175,7 @@ docker build --build-arg -f train.dockerfile . -t train:latest
 
 - This command will build the Docker image and tag it as `train:latest`.
 
-## Running the Docker Container
+### Running the Docker Container
 
 Once the Docker image is built, you can run the container using the following command (for Ubuntu-based systems):
 
