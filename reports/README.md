@@ -459,6 +459,8 @@ We used the following GCP services in our project:
 
 - **Google Cloud Buckets:** Used for storing our datasets and processed data. The buckets served as a remote storage solution, ensuring easy accessibility and integration with our version control system, DVC.
 
+- **Cloud Run Function:** Used to implement and run a deployment function on the cloud.
+
 - **VM Instances (Compute Engine):** Utilized for running experiments and training our models in the cloud. These virtual machines provided the computational resources needed for efficient execution of our workloads.
 
 - **Cloud Build:** Employed to build Docker images automatically. We set up triggers linked to our GitHub repository so that whenever changes were pushed, the Docker images were rebuilt and deployed. This streamlined our workflow and ensured that the latest code was always reflected in the containerized environment.
@@ -748,4 +750,7 @@ Student s233671 was responsible for creating the baseline model and later integr
 
 Student s232425 was in charge of setting up the initial cookie cutter template and creating GitHub repository. Additionally, she updated the model training setup, so it would be ran on pytorch-lightning application, making model training code less cluttered. Also, she implemented model deployment function on the google cloud.
 
+Student s242577 integrated the Loguru library for efficient logging and automatic log file creation and wrote test models to validate various cloud-based API functionalities. She also ensured a smooth Git workflow by implementing best practices and formatting workflows, enhancing collaboration and code quality.
+  
 For the project we used AI tools, such as ChatGPT and Gemini on the Google Cloud to help write dome of our code and for dubbuging purposes. Additionally, the AI tools were used to clarify lectures material and get deeper understanding.
+
