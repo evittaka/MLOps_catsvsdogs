@@ -1,6 +1,6 @@
-![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/tests.yaml/badge.svg)
-![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/api-tests.yaml/badge.svg)
-![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/locust.yaml/badge.svg)
+![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/tests.yaml/badge.svg?branch=main)
+![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/api-tests.yaml/badge.svg?branch=main)
+![badge](https://github.com/DevJav/MLOps_catsvsdogs/actions/workflows/locust.yaml/badge.svg?branch=main)
 
 # Project Cats vs. Dogs
 
