@@ -751,3 +751,5 @@ Student s233671 was responsible for creating the baseline model and later integr
 Student s232425 was in charge of setting up the initial cookie cutter template and creating GitHub repository. Additionally, she updated the model training setup, so it would be ran on pytorch-lightning application, making model training code less cluttered. Also, she implemented model deployment function on the google cloud.
 
 Student s242577 integrated the Loguru library for efficient logging and automatic log file creation and wrote test models to validate various cloud-based API functionalities. She also ensured a smooth Git workflow by implementing best practices and formatting workflows, enhancing collaboration and code quality.
+
+Student s180866 was responsible for the unittests and setup caching for unittests to ensure faster CI process. Setup the code that checks if you have the data in your local repository, otherwise downloads it from Kaggle. They setup the frontend, utilising the API, and deployed it to the cloud.
